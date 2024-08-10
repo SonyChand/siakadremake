@@ -18,10 +18,10 @@
                             <div class="card-body">
 
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Login</h5>
-                                    <p class="text-center small">Enter your email & password to login</p>
+                                    <h5 class="card-title text-center pb-0 fs-4">Lupa Password</h5>
+                                    <p class="text-center small">Enter your email</p>
                                 </div>
-                                <?= $this->session->flashdata('message'); ?>
+                                <?= $this->session->flashdata('forgot'); ?>
                                 <form class="row g-3" action="" method="POST">
 
                                     <div class="col-12">
@@ -32,17 +32,10 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                        <?= form_error('email', '<small class="text-danger">', '</small>'); ?>
-                                        <div class="invalid-feedback">Please enter your password!</div>
-                                    </div>
-
-                                    <div class="col-12 mb-2">
-                                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                                        <button class="btn btn-primary w-100" type="submit">Kirim</button>
                                     </div>
                                 </form>
-                                <p>Lupa password? <a href="<?= base_url('auth/forgotpassword') ?>">Pulihkan</a></p>
+
                             </div>
                         </div>
 

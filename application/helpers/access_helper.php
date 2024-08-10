@@ -183,6 +183,24 @@ function tanggal_indonesia2($tanggal)
     return $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
 }
 
+function token($email, $tanggalSekarang)
+{
+    $access = get_instance();
+
+    $initial = strtoupper(substr($email, 0, 1));
+    $randomChar = strtoupper(str_shuffle($email));
+    $randomTgl = strtoupper(str_shuffle($tanggalSekarang));
+    $code = $initial . $randomChar . $randomTgl;
+    $kode = substr(str_shuffle(md5($code)), 0, 8);
+
+    $query = $access->db->get_where('token_pengguna', ['token' => $kode, 'email' => $email]);
+    if ($query->num_rows > 0) {
+        return token($email, $tanggalSekarang);
+    } else {
+        return $kode;
+    }
+}
+
 function kodeRM($name, $nik)
 {
     $access = get_instance();

@@ -18,8 +18,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Pasien</p>
-                                    <h4 class="card-title"><?= $this->db->get('pasien')->num_rows(); ?></h4>
+                                    <p class="card-category">Siswa</p>
+                                    <h4 class="card-title"><?= $this->db->get('siswa')->num_rows(); ?></h4>
                                 </div>
                             </div>
                         </div>
@@ -37,8 +37,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Dokter</p>
-                                    <h4 class="card-title"><?= $this->db->get('dokter')->num_rows(); ?></h4>
+                                    <p class="card-category">Guru</p>
+                                    <h4 class="card-title"><?= $this->db->get('ustadz')->num_rows(); ?></h4>
                                 </div>
                             </div>
                         </div>
@@ -56,8 +56,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Rekam Medis</p>
-                                    <h4 class="card-title"><?= $this->db->get('medik')->num_rows(); ?></h4>
+                                    <p class="card-category">Kelas</p>
+                                    <h4 class="card-title"><?= $this->db->get('kelas')->num_rows(); ?></h4>
                                 </div>
                             </div>
                         </div>
@@ -75,8 +75,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Transaksi Selesai</p>
-                                    <h4 class="card-title"><?= $this->db->get_where('pembayaran', ['status' => 2])->num_rows(); ?></h4>
+                                    <p class="card-category">Mata Pelajaran</p>
+                                    <h4 class="card-title"><?= $this->db->get_where('mata_pelajaran')->num_rows(); ?></h4>
                                 </div>
                             </div>
                         </div>
