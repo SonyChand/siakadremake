@@ -76,21 +76,39 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label for="spesialisasi" class="form-label">Spesialisasi</label>
-                                                <input type="text" class="form-control" name="spesialisasi" id="spesialisasi" required>
-                                                <?= form_error('spesialisasi', '<small class="text-danger">', '</small>'); ?>
+                                                <label for="tpt_lahir" class="form-label">Tempat Lahir</label>
+                                                <input type="text" class="form-control" name="tpt_lahir" id="tpt_lahir" required>
+                                                <?= form_error('tpt_lahir', '<small class="text-danger">', '</small>'); ?>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="sip" class="form-label">Surat Izin Praktek</label>
-                                                <input type="text" class="form-control" name="sip" id="sip">
-                                                <?= form_error('sip', '<small class="text-danger">', '</small>'); ?>
+                                                <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
+                                                <input type="date" class="form-control" name="tgl_lahir" id="tgl_lahir" required>
+                                                <?= form_error('tgl_lahir', '<small class="text-danger">', '</small>'); ?>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label for="str" class="form-label">Surat Tanda Registrasi</label>
-                                                <input type="text" class="form-control" name="str" id="str">
-                                                <?= form_error('str', '<small class="text-danger">', '</small>'); ?>
+                                                <label for="jk" class="form-label">Jenis Kelamin</label>
+                                                <select id="jk" class="form-select" name="jk" required>
+                                                    <option value="" hidden>
+                                                        Pilih Jenis Kelamin
+                                                    </option>
+                                                    <option value="L">Laki-laki</option>
+                                                    <option value="P">Perempuan</option>
+                                                </select>
+                                                <?= form_error('jk', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="pendidikan" class="form-label">Pendidikan</label>
+                                                <input type="text" class="form-control" name="pendidikan" id="pendidikan" required>
+                                                <?= form_error('pendidikan', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="nik" class="form-label">NIK</label>
+                                                <input type="tel" class="form-control" name="nik" id="nik" required>
+                                                <?= form_error('nik', '<small class="text-danger">', '</small>'); ?>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="no_hp" class="form-label">No Handphone</label>
@@ -99,13 +117,11 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="alamat" class="form-label">Alamat Rumah/Praktek</label>
-                                                <textarea name="alamat" id="alamat" class="form-control" required><?= $oneData->alamat ?></textarea>
-                                                <?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
+                                            <div class="col-md-6">
+                                                <label for="agama" class="form-label">Agama</label>
+                                                <input type="text" class="form-control" name="agama" id="agama" required>
+                                                <?= form_error('agama', '<small class="text-danger">', '</small>'); ?>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="image" class="col-form-label">Foto Profil</label>
                                                 <!-- <div class="input-group"> -->
@@ -115,16 +131,12 @@
                                                 <!-- </div> -->
                                                 <span class="small"><strong style="font-size: 10px;line-height:0.1;">Ukuran Foto tidak melebihi 5 MB dan Rekomendasi Rasio Aspek 1:1, Format (JPG/PNG/GIF)</strong></span>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="status" class="form-label">Status</label>
-                                                <select id="status" class="form-select" name="status" required>
-                                                    <option value="" hidden>
-                                                        Pilih Status
-                                                    </option>
-                                                    <option value="1">Aktif</option>
-                                                    <option value="0">Nonaktif</option>
-                                                </select>
-                                                <?= form_error('status', '<small class="text-danger">', '</small>'); ?>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="alamat" class="form-label">Alamat</label>
+                                                <textarea name="alamat" id="alamat" class="form-control" required></textarea>
+                                                <?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -135,38 +147,42 @@
                             </div>
                         </div>
                     </div><!-- End Basic Modal-->
-                    <?= $this->session->flashdata('dokter'); ?>
+                    <?= $this->session->flashdata('ustadz'); ?>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="multi-filter-select" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th>#</th>
                                         <th>
                                             Akun Pengguna
                                         </th>
+                                        <th>NIK</th>
                                         <th>Nama</th>
-                                        <th>Spesialisasi</th>
-                                        <th>SIP</th>
-                                        <th>STR</th>
-                                        <th>No Hp</th>
-                                        <th>Status</th>
+                                        <th>Tempat/Tanggal Lahir</th>
+                                        <th>JK</th>
+                                        <th>No Handphone</th>
+                                        <th>Agama</th>
+                                        <th>Pendidikan</th>
+                                        <th>Alamat</th>
                                         <th>Foto Profil</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>No</th>
+                                        <th>#</th>
                                         <th>
                                             Akun Pengguna
                                         </th>
+                                        <th>NIK</th>
                                         <th>Nama</th>
-                                        <th>Spesialisasi</th>
-                                        <th>SIP</th>
-                                        <th>STR</th>
-                                        <th>No Hp</th>
-                                        <th>Status</th>
+                                        <th>Tempat/Tanggal Lahir</th>
+                                        <th>JK</th>
+                                        <th>No Handphone</th>
+                                        <th>Agama</th>
+                                        <th>Pendidikan</th>
+                                        <th>Alamat</th>
                                         <th>Foto Profil</th>
                                         <th></th>
                                     </tr>
@@ -186,20 +202,14 @@
                                                 }
                                                 ?>
                                             </td>
+                                            <td><?= $row->nik ?></td>
                                             <td><?= $row->nama ?></td>
-                                            <td><?= $row->spesialisasi ?></td>
-                                            <td><?= $row->sip ?></td>
-                                            <td><?= $row->str ?></td>
+                                            <td><?= $row->tpt_lahir ?>, <?= tanggal_indonesia(date('Y-m-d', $row->tgl_lahir)) ?></td>
+                                            <td><?= $row->jk ?></td>
                                             <td><?= $row->no_hp ?></td>
-                                            <td>
-                                                <?php
-                                                if ($row->status == 1) {
-                                                    echo 'Aktif';
-                                                } else {
-                                                    echo 'Nonaktif';
-                                                }
-                                                ?>
-                                            </td>
+                                            <td><?= $row->agama ?></td>
+                                            <td><?= $row->pendidikan ?></td>
+                                            <td><?= $row->alamat ?></td>
                                             <td>
                                                 <?php
                                                 if ($akun->image == 'default') {

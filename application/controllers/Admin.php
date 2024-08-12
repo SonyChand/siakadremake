@@ -291,28 +291,30 @@ class Admin extends CI_Controller
 		redirect('admin/pasien');
 	}
 
-	public function dokter()
+	public function ustadz()
 	{
 		$data = [
 			'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
-			'title' => 'Dokter',
-			'dataTab' => $this->db->get('dokter')->result(),
+			'title' => 'Ustadz',
+			'dataTab' => $this->db->get('ustadz')->result(),
 			'data1' => $this->db->get_where('pengguna', ['role' => 2, 'image' => 'default'])->result()
 		];
 
 		$this->form_validation->set_rules('id_user', 'Akun Pengguna', 'required|trim');
 		$this->form_validation->set_rules('nama', 'Nama Lengkap', 'required|trim');
-		$this->form_validation->set_rules('spesialisasi', 'Spesialisasi Dokter', 'required|trim');
-		$this->form_validation->set_rules('sip', 'Nomor Surat Izin Praktik', 'trim');
-		$this->form_validation->set_rules('str', 'Nomor Surat Tanda Praktik', 'trim');
-		$this->form_validation->set_rules('no_hp', 'Nomor Handphone', 'required|trim');
+		$this->form_validation->set_rules('tpt_lahir', 'Tempat Lahir', 'required|trim');
+		$this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required|trim');
+		$this->form_validation->set_rules('jk', 'Jenis Kelamin', 'required|trim');
+		$this->form_validation->set_rules('pendidikan', 'Pendidikan', 'required|trim');
+		$this->form_validation->set_rules('nik', 'NIK', 'required|trim|numeric|exact_length[16]');
+		$this->form_validation->set_rules('no_hp', 'Nomor Handphone', 'required|trim|numeric');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
-		$this->form_validation->set_rules('status', 'Status Aktif Dokter', 'required|trim');
+		$this->form_validation->set_rules('agama', 'Agama', 'required|trim');
 
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/dash/header', $data);
 			$this->load->view('templates/dash/sidenav', $data);
-			$this->load->view('admin/dokter/index', $data);
+			$this->load->view('admin/ustadz/index', $data);
 			$this->load->view('templates/dash/footer');
 		} else {
 			$image = $_FILES['image']['name'];
@@ -346,7 +348,7 @@ class Admin extends CI_Controller
 					'image' => $img,
 					'role' => 2,
 					'no_hp' => str_replace(' ', '', str_replace('+', '', $this->input->post('no_hp', true))),
-					'jenis_kelamin' => 'L',
+					'jenis_kelamin' => $this->input->post('jk', true),
 					'tgl_dibuat' => time(),
 					'status' => 1
 				];
@@ -360,46 +362,50 @@ class Admin extends CI_Controller
 
 			$dataUser = [
 				'id_user' => $cariIdUser,
+				'nik' => $this->input->post('nik', true),
 				'nama' => $this->input->post('nama', true),
-				'spesialisasi' => $this->input->post('spesialisasi', true),
-				'sip' => $this->input->post('sip', true),
-				'str' => $this->input->post('str', true),
+				'tpt_lahir' => $this->input->post('tpt_lahir', true),
+				'tgl_lahir' => strtotime($this->input->post('tgl_lahir', true)),
+				'jk' => $this->input->post('jk', true),
 				'no_hp' => str_replace(' ', '', str_replace('+', '', $this->input->post('no_hp', true))),
+				'agama' => $this->input->post('agama', true),
+				'pendidikan' => $this->input->post('pendidikan', true),
 				'alamat' => $this->input->post('alamat', true),
-				'status' => $this->input->post('status', true),
 				'tgl_dibuat' => time(),
 			];
 
-			$this->db->insert('dokter', $dataUser);
+			$this->db->insert('ustadz', $dataUser);
 
-			$this->session->set_flashdata('dokter', '<div class="alert alert-success">Dokter baru dengan Nama <strong>' . $dataUser['nama'] . '</strong> berhasil ditambahkan!!</div>');
-			redirect('admin/dokter');
+			$this->session->set_flashdata('ustadz', '<div class="alert alert-success">Ustadz baru dengan Nama <strong>' . $dataUser['nama'] . '</strong> berhasil ditambahkan!!</div>');
+			redirect('admin/ustadz');
 		}
 	}
 
 
-	public function ubahDokter($id = '')
+	public function ubahUstadz($id = '')
 	{
 		$data = [
 			'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
-			'title' => 'Ubah Dokter',
-			'oneData' => $this->db->get_where('dokter', ['id' => $id])->row(),
+			'title' => 'Ubah Ustadz',
+			'oneData' => $this->db->get_where('ustadz', ['id' => $id])->row(),
 			'data1' => $this->db->get_where('pengguna', ['role' => 2, 'image' => 'default'])->result()
 		];
 
 		$this->form_validation->set_rules('nama', 'Nama Lengkap', 'required|trim');
-		$this->form_validation->set_rules('spesialisasi', 'Spesialisasi Dokter', 'required|trim');
-		$this->form_validation->set_rules('sip', 'Nomor Surat Izin Praktik', 'trim');
-		$this->form_validation->set_rules('str', 'Nomor Surat Tanda Praktik', 'trim');
-		$this->form_validation->set_rules('no_hp', 'Nomor Handphone', 'required|trim');
+		$this->form_validation->set_rules('tpt_lahir', 'Tempat Lahir', 'required|trim');
+		$this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required|trim');
+		$this->form_validation->set_rules('jk', 'Jenis Kelamin', 'required|trim');
+		$this->form_validation->set_rules('pendidikan', 'Pendidikan', 'required|trim');
+		$this->form_validation->set_rules('nik', 'NIK', 'required|trim|numeric|exact_length[16]');
+		$this->form_validation->set_rules('no_hp', 'Nomor Handphone', 'required|trim|numeric');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
-		$this->form_validation->set_rules('status', 'Status Aktif Dokter', 'required|trim');
+		$this->form_validation->set_rules('agama', 'Agama', 'required|trim');
 
 
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/dash/header', $data);
 			$this->load->view('templates/dash/sidenav', $data);
-			$this->load->view('admin/dokter/ubah', $data);
+			$this->load->view('admin/ustadz/ubah', $data);
 			$this->load->view('templates/dash/footer');
 		} else {
 
@@ -418,8 +424,8 @@ class Admin extends CI_Controller
             <div class="alert alert-danger alert-dismissible fade show border border-dark" role="alert">
                         <strong>Ukuran Gambar</strong> tidak bisa melebihi <strong>5 MB</strong>
             </div>';
-					$this->session->set_flashdata('dokter', $isiPesan);
-					redirect('dokter');
+					$this->session->set_flashdata('ustadz', $isiPesan);
+					redirect('ustadz');
 				}
 
 				$config['file_name'] = time() . '_' . md5(sha1(base64_encode($email))) . time();
@@ -434,44 +440,46 @@ class Admin extends CI_Controller
 					unlink(FCPATH . 'assets/img/user/' . $old_image);
 
 					// if (unlink(FCPATH . 'assets/img/user/' . $old_image) == false) {
-					//     redirect('dokter');
+					//     redirect('ustadz');
 					// }
 
 					$new_image = $this->upload->data('file_name');
 					$this->db->where('id', $blabla->id);
 					$this->db->update('pengguna', ['image' => $new_image]);
 				} else {
-					redirect('dokter');
+					redirect('admin/ustadz');
 				}
 			}
 
 			$dataUser = [
+				'nik' => $this->input->post('nik', true),
 				'nama' => $this->input->post('nama', true),
-				'spesialisasi' => $this->input->post('spesialisasi', true),
-				'sip' => $this->input->post('sip', true),
-				'str' => $this->input->post('str', true),
+				'tpt_lahir' => $this->input->post('tpt_lahir', true),
+				'tgl_lahir' => strtotime($this->input->post('tgl_lahir', true)),
+				'jk' => $this->input->post('jk', true),
 				'no_hp' => str_replace(' ', '', str_replace('+', '', $this->input->post('no_hp', true))),
+				'agama' => $this->input->post('agama', true),
+				'pendidikan' => $this->input->post('pendidikan', true),
 				'alamat' => $this->input->post('alamat', true),
-				'status' => $this->input->post('status', true),
 			];
 
 			$this->db->where('id', $data['oneData']->id);
-			$this->db->update('dokter', $dataUser);
+			$this->db->update('ustadz', $dataUser);
 
 
-			$this->session->set_flashdata('dokter', '<div class="alert alert-success">Dokter dengan Nama <strong>' . $data['oneData']->nama . '</strong> berhasil diubah!!</div>');
-			redirect('admin/dokter');
+			$this->session->set_flashdata('ustadz', '<div class="alert alert-success">Ustadz dengan Nama <strong>' . $data['oneData']->nama . '</strong> berhasil diubah!!</div>');
+			redirect('admin/ustadz');
 		}
 	}
 
-	public function hapusDokter($id)
+	public function hapusustadz($id)
 	{
-		$pel = $this->db->get_where('dokter', ['id' => $id])->row();
+		$pel = $this->db->get_where('ustadz', ['id' => $id])->row();
 
-		$this->db->delete('dokter', ['id' => $id]);
+		$this->db->delete('ustadz', ['id' => $id]);
 
-		$this->session->set_flashdata('dokter', '<div class="alert alert-warning">Data Dokter dengan Nama <strong>' . $pel->nama . '</strong> berhasil dihapus!!</div>');
-		redirect('admin/dokter');
+		$this->session->set_flashdata('ustadz', '<div class="alert alert-warning">Data ustadz dengan Nama <strong>' . $pel->nama . '</strong> berhasil dihapus!!</div>');
+		redirect('admin/ustadz');
 	}
 
 	public function Pembayaran()

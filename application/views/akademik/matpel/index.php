@@ -56,57 +56,34 @@
                                     <div class="modal-body">
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label for="nama" class="form-label">Nama</label>
+                                                <label for="kode" class="form-label">Kode</label>
+                                                <input type="text" class="form-control" name="kode" id="kode" required>
+                                                <?= form_error('kode', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="nama" class="form-label">Mata Pelajaran</label>
                                                 <input type="text" class="form-control" name="nama" id="nama" required>
                                                 <?= form_error('nama', '<small class="text-danger">', '</small>'); ?>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="email" class="form-label">Email</label>
-                                                <input type="email" class="form-control" name="email" id="email" required>
-                                                <?= form_error('email', '<small class="text-danger">', '</small>'); ?>
-                                            </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label for="no_hp" class="form-label">No Handphone</label>
-                                                <input type="tel" class="form-control" name="no_hp" id="no_hp" required>
-                                                <?= form_error('no_hp', '<small class="text-danger">', '</small>'); ?>
+                                                <label for="deskripsi" class="form-label">Deskripsi</label>
+                                                <textarea name="deskripsi" id="deskripsi" class="form-control" required></textarea>
+                                                <?= form_error('deskripsi', '<small class="text-danger">', '</small>'); ?>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                                                <select id="jenis_kelamin" class="form-select" name="jenis_kelamin" required>
-                                                    <option value="" hidden>
-                                                        Pilih Jenis Kelamin
-                                                    </option>
-                                                    <option value="L">Laki-laki</option>
-                                                    <option value="P">Perempuan</option>
-                                                </select>
-                                                <?= form_error('jenis_kelamin', '<small class="text-danger">', '</small>'); ?>
+                                                <label for="silabus" class="col-form-label">File Silabus</label>
+                                                <!-- <div class="input-group"> -->
+                                                <div class="custom-file">
+                                                    <input class="form-control" type="file" name="silabus" id="silabus" accept=".pdf,application/pdf,.doc,application/msword,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                                </div>
+                                                <!-- </div> -->
+                                                <span class="small"><strong style="font-size: 10px;line-height:0.1;">Ukuran File tidak melebihi 5 MB dan Format (PDF/DOC/DOCX)</strong></span>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="role" class="form-label">Akses Pengguna</label>
-                                                <select id="role" class="form-select" name="role" required>
-                                                    <option value="" hidden>
-                                                        Pilih Akses
-                                                    </option>
-                                                    <option value="1">Admin</option>
-                                                    <option value="2">Ustadz</option>
-                                                </select>
-                                                <?= form_error('role', '<small class="text-danger">', '</small>'); ?>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="status" class="form-label">Status</label>
-                                                <select id="status" class="form-select" name="status" required>
-                                                    <option value="" hidden>
-                                                        Pilih Status
-                                                    </option>
-                                                    <option value="1">Aktif</option>
-                                                    <option value="0">Nonaktif</option>
-                                                </select>
-                                                <?= form_error('status', '<small class="text-danger">', '</small>'); ?>
-                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -116,33 +93,31 @@
                             </div>
                         </div>
                     </div><!-- End Basic Modal-->
-                    <?= $this->session->flashdata('pengguna'); ?>
+                    <?= $this->session->flashdata('matpel'); ?>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="multi-filter-select" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th>#</th>
                                         <th>
-                                            Email
+                                            Kode
                                         </th>
                                         <th>Nama</th>
-                                        <th>Role</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Terakhir Login</th>
+                                        <th>Deskripsi</th>
+                                        <th>Lampiran Silabus</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>No</th>
+                                        <th>#</th>
                                         <th>
-                                            Email
+                                            Kode
                                         </th>
                                         <th>Nama</th>
-                                        <th>Role</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Terakhir Login</th>
+                                        <th>Deskripsi</th>
+                                        <th>Lampiran Silabus</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -152,28 +127,24 @@
                                     <?php foreach ($dataTab as $row) : ?>
                                         <tr>
                                             <td><?= $i++ ?></td>
-                                            <td><?= $row->email ?></td>
+                                            <td><?= $row->kode ?></td>
                                             <td><?= $row->nama ?></td>
+                                            <td><?= $row->deskripsi ?></td>
                                             <td>
                                                 <?php
-                                                if ($row->role == 1) {
-                                                    echo "Admin";
+                                                if ($row->silabus != null) {
+                                                    $link = base_url('assets/doc/silabus/') . $row->silabus;
+                                                    echo '<a target="_blank" class="badge badge-warning text-decoration-none" href="' . $link . '">Download</a>';
                                                 } else {
-                                                    echo "Ustadz";
+                                                    echo 'Tidak ada';
                                                 }
                                                 ?>
                                             </td>
-                                            <td><?= $row->jenis_kelamin ?></td>
-                                            <td><?php if ($row->terakhir_login) {
-                                                    echo tanggal_indonesia(date('Y-m-d', $row->terakhir_login));
-                                                } else {
-                                                    echo 'Belum pernah login';
-                                                } ?></td>
                                             <td class="text-center">
-                                                <a href="<?= base_url('admin/ubah') . $title . '/' . $row->id ?>">
+                                                <a href="<?= base_url('akademik/ubahMatpel/') . $row->id ?>">
                                                     <span class="badge bg-warning"><i class="bi bi-pencil-square me-1"></i> Ubah</span>
                                                 </a>
-                                                <a href="<?= base_url('admin/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
+                                                <a href="<?= base_url('akademik/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
                                                     <span class="badge bg-danger"><i class="bi bi-trash me-1"></i> Hapus</span>
                                                 </a>
                                             </td>

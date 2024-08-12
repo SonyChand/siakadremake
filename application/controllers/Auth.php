@@ -67,10 +67,10 @@ class Auth extends CI_Controller
 			if ($user) {
 				$this->session->set_userdata('forgotEmail', $user->email);
 				$this->_send_password_reset_email($user);
-				$this->session->set_flashdata('forgot', 'Password reset email sent successfully!');
+				$this->session->set_flashdata('forgot', '<div class="alert alert-success" role="alert">Link pemulihan password berhasil dikirim ke email</div>');
 				redirect('auth/forgotpassword');
 			} else {
-				$this->session->set_flashdata('forgot', 'Email not found!');
+				$this->session->set_flashdata('forgot', '<div class="alert alert-danger" role="alert">Email tidak ada!</div>');
 				redirect('auth/forgotpassword');
 			}
 		}
@@ -100,10 +100,10 @@ class Auth extends CI_Controller
 					$this->db->delete('token_pengguna');
 
 					$this->session->unset_userdata('forgotEmail');
-					$this->session->set_flashdata('message', 'Reset Password berhasil!!');
+					$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password berhasil diubah!!</div>');
 					redirect('auth');
 				} else {
-					$this->session->set_flashdata('reset', 'Password tidak sama!!');
+					$this->session->set_flashdata('reset', '<div class="alert alert-warning" role="alert">Password tidak sama!!</div>');
 					redirect('auth/reset_password/' . $token);
 				}
 			} else {
@@ -116,7 +116,7 @@ class Auth extends CI_Controller
 		} else {
 			// Token is invalid or expired
 			$this->session->unset_userdata('forgotEmail');
-			$this->session->set_flashdata('forgot', 'Invalid or expired token');
+			$this->session->set_flashdata('forgot', '<div class="alert alert-danger" role="alert">Token salah atau kadaluarsa</div>');
 			redirect('auth/forgotpassword');
 		}
 	}
@@ -141,12 +141,13 @@ class Auth extends CI_Controller
 		$config['charset'] = 'utf-8';
 		$config['newline'] = "\r\n";
 		$config['mailtype'] = 'html';
+		$config['validation'] = TRUE;
 
 		$this->email->initialize($config);
 
 		$this->email->from('sonychandmaulana@gmail.com', 'Sony Chandra Maulana');
 		$this->email->to($user->email);
-		$this->email->subject('Password Reset');
+		$this->email->subject('Pemulihan Password');
 
 		// Inline critical CSS for basic styling
 		$inline_css = '
@@ -177,8 +178,8 @@ a {
     display: inline-block;
     padding: 10px 20px;
     background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
+    color: #fff !important;
+    text-decoration: none !important;
     border-radius: 5px;
 }
 </style>
@@ -192,11 +193,11 @@ a {
 </head>
 <body>
     <div class="container">
-        <h2>Password Reset</h2>
-        <p>Dear ' . $user->nama . ',</p>
-        <p>To reset your password, click on the following link:</p>
-        <a href="' . base_url('auth/reset_password/')  . $token . '">Reset Password</a>
-        <p>If you did not request a password reset, please ignore this email.</p>
+        <h2>Pemulihan Password</h2>
+        <p>Halo <strong>' . $user->nama . '</strong>,</p>
+        <p>Untuk memulihkan password, silahkan klik tombol dibawah:</p>
+        <a href="' . base_url('auth/reset_password/')  . $token . '">Pulihkan Password</a>
+        <p>Abaikan pesan ini jika anda tidak meminta pemulihan password!</p>
     </div>
 </body>
 </html>
