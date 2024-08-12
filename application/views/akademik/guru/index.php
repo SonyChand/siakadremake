@@ -147,8 +147,8 @@
                             </div>
                         </div>
                     </div><!-- End Basic Modal-->
-                    <?= $this->session->flashdata('ustadz'); ?>
                     <div class="card-body">
+                        <?= $this->session->flashdata('guru'); ?>
                         <div class="table-responsive">
                             <table id="multi-filter-select" class="display table table-striped table-hover">
                                 <thead>
@@ -221,10 +221,10 @@
                                                 <img src="<?= $link ?>" class="img-thumbnail">
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?= base_url('admin/ubah') . $title . '/' . $row->id ?>">
+                                                <a href="<?= base_url('akademik/ubah') . $title . '/' . $row->id ?>">
                                                     <span class="badge bg-warning"><i class="bi bi-pencil-square me-1"></i> Ubah</span>
                                                 </a>
-                                                <a href="<?= base_url('admin/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
+                                                <a href="<?= base_url('akademik/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
                                                     <span class="badge bg-danger"><i class="bi bi-trash me-1"></i> Hapus</span>
                                                 </a>
                                             </td>
