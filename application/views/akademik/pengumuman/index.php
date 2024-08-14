@@ -37,9 +37,6 @@
                                     Add
                                 </a>
                             </div>
-                            <div class="p-1">
-                                <a class="badge btn-warning" target="_blank" href="<?= base_url('output/data') . str_replace(' ', '', $title) ?>"><i class="fa fa-download"></i> Download</a>
-                            </div>
                         </div>
 
 
@@ -52,38 +49,14 @@
                                     <h5 class="modal-title">Tambah <?= $title ?></h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form method="POST" enctype="multipart/form-data">
+                                <form method="POST">
                                     <div class="modal-body">
                                         <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="kode" class="form-label">Kode</label>
-                                                <input type="text" class="form-control" name="kode" id="kode" required>
-                                                <?= form_error('kode', '<small class="text-danger">', '</small>'); ?>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="nama" class="form-label">Mata Pelajaran</label>
-                                                <input type="text" class="form-control" name="nama" id="nama" required>
-                                                <?= form_error('nama', '<small class="text-danger">', '</small>'); ?>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="deskripsi" class="form-label">Deskripsi</label>
+                                            <div class="col-md-12">
+                                                <label for="deskripsi" class="form-label">Deskripsi Pengumuman</label>
                                                 <textarea name="deskripsi" id="deskripsi" class="form-control" required></textarea>
                                                 <?= form_error('deskripsi', '<small class="text-danger">', '</small>'); ?>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="silabus" class="col-form-label">File Silabus</label>
-                                                <!-- <div class="input-group"> -->
-                                                <div class="custom-file">
-                                                    <input class="form-control" type="file" name="silabus" id="silabus" accept=".pdf,application/pdf,.doc,application/msword,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                                                </div>
-                                                <!-- </div> -->
-                                                <span class="small"><strong style="font-size: 10px;line-height:0.1;">Ukuran File tidak melebihi 5 MB dan Format (PDF/DOC/DOCX)</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -93,19 +66,17 @@
                             </div>
                         </div>
                     </div><!-- End Basic Modal-->
-                    <?= $this->session->flashdata('matpel'); ?>
                     <div class="card-body">
+                        <?= $this->session->flashdata('pengumuman'); ?>
                         <div class="table-responsive">
                             <table id="multi-filter-select" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>
-                                            Kode
+                                            Deskripsi
                                         </th>
-                                        <th>Nama</th>
-                                        <th>Deskripsi</th>
-                                        <th>Lampiran Silabus</th>
+                                        <th>Dibuat pada</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -113,11 +84,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>
-                                            Kode
+                                            Deskripsi
                                         </th>
-                                        <th>Nama</th>
-                                        <th>Deskripsi</th>
-                                        <th>Lampiran Silabus</th>
+                                        <th>Dibuat pada</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -127,21 +96,10 @@
                                     <?php foreach ($dataTab as $row) : ?>
                                         <tr>
                                             <td><?= $i++ ?></td>
-                                            <td><?= $row->kode ?></td>
-                                            <td><?= $row->nama ?></td>
                                             <td><?= $row->deskripsi ?></td>
-                                            <td>
-                                                <?php
-                                                if ($row->silabus != null) {
-                                                    $link = base_url('assets/doc/silabus/') . $row->silabus;
-                                                    echo '<a target="_blank" class="badge badge-warning text-decoration-none" href="' . $link . '">Download</a>';
-                                                } else {
-                                                    echo 'Tidak ada';
-                                                }
-                                                ?>
-                                            </td>
+                                            <td><?= tanggal_indonesia(date('Y-m-d', $row->tgl_dibuat)) ?></td>
                                             <td class="text-center">
-                                                <a href="<?= base_url('akademik/ubahMatpel/') . $row->id ?>">
+                                                <a href="<?= base_url('akademik/ubah') . $title . '/' . $row->id ?>">
                                                     <span class="badge bg-warning"><i class="bi bi-pencil-square me-1"></i> Ubah</span>
                                                 </a>
                                                 <a href="<?= base_url('akademik/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">

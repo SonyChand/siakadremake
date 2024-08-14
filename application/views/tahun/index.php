@@ -37,9 +37,6 @@
                                     Add
                                 </a>
                             </div>
-                            <div class="p-1">
-                                <a class="badge btn-warning" target="_blank" href="<?= base_url('output/data') . $title ?>"><i class="fa fa-download"></i> Download</a>
-                            </div>
                         </div>
 
 

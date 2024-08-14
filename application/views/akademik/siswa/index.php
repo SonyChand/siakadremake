@@ -38,7 +38,7 @@
                                 </a>
                             </div>
                             <div class="p-1">
-                                <a class="badge btn-warning" target="_blank" href="<?= base_url('output/data') . $title ?>"><i class="fa fa-download"></i> Download</a>
+                                <a class="badge btn-warning" target="_blank" href="" data-bs-toggle="modal" data-bs-target="#downloadModal"><i class="fa fa-download"></i> Download</a>
                             </div>
                         </div>
 
@@ -161,6 +161,39 @@
                             </div>
                         </div>
                     </div><!-- End Basic Modal-->
+
+                    <div class="modal fade" id="downloadModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Download <?= $title ?></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form method="POST" action="<?= base_url('output/dataSiswa') ?>" target="_blank">
+                                    <div class="modal-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="kelas" class="form-label">Kelas</label>
+                                                <select id="kelas" class="form-select" name="kelas" required>
+                                                    <option value="" hidden>
+                                                        Pilih Kelas
+                                                    </option>
+                                                    <option value="all">Semua Data</option>
+                                                    <?php foreach ($data1 as $row) : ?>
+                                                        <option value="<?= $row->id ?>"><?= $row->nama ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-outline-success">Download</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card-body">
                         <?= $this->session->flashdata('siswa'); ?>
                         <div class="table-responsive">

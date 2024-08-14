@@ -30,6 +30,20 @@
             /* Adjust as needed */
         }
 
+        .tabelKOP {
+            border-collapse: collapse;
+            /* Merges borders for a clean look */
+            width: 100%;
+            /* Adjust as needed */
+        }
+
+        .tabelKOP td {
+            /* Styles table cells (both data and header cells) */
+            padding: 8px;
+            text-align: center;
+            /* Adjust as needed */
+        }
+
         .tabel1 td {
             /* Styles table cells (both data and header cells) */
             border: 1px solid #000;
@@ -51,27 +65,29 @@
 </head>
 
 <body>
-
-    <table width="100%">
+    <table class="tabelKOP" style="border-color: black !important;border-bottom-style:double !important;line-height:1.3;">
         <tr>
-            <td style="text-align: center;">
-                <h3><?= $title ?></h3>
+            <td style="width: 20% !important;" class="text-start">
+                <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
+            </td>
+            <td class="text-center">
+                <span style="font-size: 15px;">SISTEM INFORMASI AKADEMIK</span><br>
+                <span style="font-size: 15px;"><?= strtoupper($title) ?></span><br>
+                <span style="font-size: 15px;"><?= base_url() ?></span><br>
+                <!-- <strong style="font-size: 15px;"><?= strtoupper($dd['puskes']); ?></strong><br> -->
+            </td>
+            <td style="width: 20% !important;" class="text-start">
+                <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
             </td>
         </tr>
-    </table>
-
+    </table><br>
 
     <table width="100%" class="tabel1">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Email</th>
-                <th>Nama</th>
-                <th>Spesialisasi</th>
-                <th>Nomor SIP</th>
-                <th>Nomor STR</th>
-                <th>No HP</th>
-                <th>Alamat Rumah / Praktek</th>
+                <th>Walikelas</th>
+                <th>Kelas</th>
                 <th>Status</th>
                 <th>Tanggal Dibuat</th>
             </tr>
@@ -79,26 +95,24 @@
         <tbody>
             <?php $i = 1;
             foreach ($data1 as $row) : ?>
+                <?php $akun = $this->db->get_where('pengguna', ['id' => $row->id_ustadz])->row(); ?>
                 <tr>
                     <th scope="row"><?= $i++ ?></th>
-                    <td><?php
-                        if ($row->email) {
-                            echo $row->email;
+                    <td>
+                        <?php if ($akun) {
+                            echo $akun->nama . ' - ' . $akun->email;
                         } else {
-                            echo 'Akun belum dikaitkan';
-                        }
-                        ?></td>
+                            echo 'Belum dikaitkan';
+                        } ?>
+                    </td>
                     <td><?= $row->nama ?></td>
-                    <td><?= $row->spesialisasi ?></td>
-                    <td><?= $row->sip ?></td>
-                    <td><?= $row->str ?></td>
-                    <td><?= $row->no_hp ?></td>
-                    <td><?= $row->alamat ?></td>
-                    <td><?php if ($row->status == 1) {
+                    <td>
+                        <?php if ($row->status == 1) {
                             echo 'Aktif';
                         } else {
-                            echo 'Nonaktif (Keluar/Cuti/Libur)';
-                        } ?></td>
+                            echo 'Nonaktif';
+                        } ?>
+                    </td>
                     <td><?= tanggal_indonesia(date('Y-m-d', $row->tgl_dibuat)) ?></td>
                 </tr>
             <?php endforeach; ?>

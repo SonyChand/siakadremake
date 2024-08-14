@@ -74,7 +74,6 @@
                 <span style="font-size: 15px;">SISTEM INFORMASI AKADEMIK</span><br>
                 <span style="font-size: 15px;"><?= strtoupper($title) ?></span><br>
                 <span style="font-size: 15px;"><?= base_url() ?></span><br>
-                <!-- <strong style="font-size: 15px;"><?= strtoupper($dd['puskes']); ?></strong><br> -->
             </td>
             <td style="width: 20% !important;" class="text-start">
                 <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
@@ -86,45 +85,42 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>No HP</th>
+                <th>Kelas</th>
+                <th>NIK</th>
+                <th>No KK</th>
+                <th>NISN</th>
+                <th>Nama Lengkap</th>
+                <th>Tempat/Tanggal Lahir</th>
                 <th>Jenis Kelamin</th>
-                <th>Tanggal Dibuat</th>
-                <th>Status</th>
+                <th>No HP</th>
+                <th>Agama</th>
+                <th>Alamat</th>
+                <th>Nama Ayah</th>
             </tr>
         </thead>
         <tbody>
             <?php $i = 1;
             foreach ($data1 as $row) : ?>
+                <?php $kelas = $this->db->get_where('kelas', ['id' => $row->id_kelas])->row(); ?>
                 <tr>
                     <th scope="row"><?= $i++ ?></th>
+                    <td>
+                        <?php if ($kelas) {
+                            echo $kelas->nama;
+                        } else {
+                            echo 'Belum ada';
+                        } ?>
+                    </td>
+                    <td><?= $row->nik ?></td>
+                    <td><?= $row->no_kk ?></td>
+                    <td><?= $row->nisn ?></td>
                     <td><?= $row->nama ?></td>
-                    <td><?= $row->email ?></td>
-                    <td>
-                        <?php
-                        if ($row->role == 1) {
-                            echo 'Admin';
-                        } elseif ($row->role == 2) {
-                            echo 'Guru';
-                        } else {
-                            echo 'Siswa';
-                        }
-                        ?>
-                    </td>
+                    <td><?= $row->tpt_lahir ?>, <?= tanggal_indonesia(date('Y-m-d', $row->tgl_lahir)) ?></td>
+                    <td><?= $row->jk ?></td>
                     <td><?= $row->no_hp ?></td>
-                    <td><?= $row->jenis_kelamin ?></td>
-                    <td><?= tanggal_indonesia(date('Y-m-d', $row->tgl_dibuat)) ?> <?= date('H:i:s', $row->tgl_dibuat) ?></td>
-                    <td>
-                        <?php
-                        if ($row->status == 0) {
-                            echo 'Nonaktif';
-                        } else {
-                            echo 'Aktif';
-                        }
-                        ?>
-                    </td>
+                    <td><?= $row->agama ?></td>
+                    <td><?= $row->alamat ?></td>
+                    <td><?= $row->nama_ayah ?></td>
                 </tr>
             <?php endforeach; ?>
     </table>

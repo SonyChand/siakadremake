@@ -86,13 +86,11 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>No HP</th>
-                <th>Jenis Kelamin</th>
+                <th>Kode</th>
+                <th>Mata Pelajaran</th>
+                <th>Silabus</th>
+                <th>Deskripsi</th>
                 <th>Tanggal Dibuat</th>
-                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -100,31 +98,11 @@
             foreach ($data1 as $row) : ?>
                 <tr>
                     <th scope="row"><?= $i++ ?></th>
+                    <td><?= $row->kode ?></td>
                     <td><?= $row->nama ?></td>
-                    <td><?= $row->email ?></td>
-                    <td>
-                        <?php
-                        if ($row->role == 1) {
-                            echo 'Admin';
-                        } elseif ($row->role == 2) {
-                            echo 'Guru';
-                        } else {
-                            echo 'Siswa';
-                        }
-                        ?>
-                    </td>
-                    <td><?= $row->no_hp ?></td>
-                    <td><?= $row->jenis_kelamin ?></td>
+                    <td><a href="<?= base_url('assets/doc/silabus/') . $row->silabus ?>" target="_blank">Silabus</a></td>
+                    <td><?= $row->deskripsi ?></td>
                     <td><?= tanggal_indonesia(date('Y-m-d', $row->tgl_dibuat)) ?> <?= date('H:i:s', $row->tgl_dibuat) ?></td>
-                    <td>
-                        <?php
-                        if ($row->status == 0) {
-                            echo 'Nonaktif';
-                        } else {
-                            echo 'Aktif';
-                        }
-                        ?>
-                    </td>
                 </tr>
             <?php endforeach; ?>
     </table>

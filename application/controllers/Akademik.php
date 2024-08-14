@@ -613,4 +613,171 @@ class Akademik extends CI_Controller
         $this->session->set_flashdata('matpel', '<div class="alert alert-warning">Data Mata Pelajaran <strong>' . $pel->nama . '</strong> berhasil dihapus!!</div>');
         redirect('akademik/matpel');
     }
+
+    public function jadwal()
+    {
+        $data = [
+            'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
+            'title' => 'Jadwal',
+            'dataTab' => $this->db->get('penjadwalan')->result(),
+            'data1' => $this->db->get('mata_pelajaran')->result(),
+            'data2' => $this->db->get('ustadz')->result(),
+            'data3' => $this->db->get('kelas')->result(),
+        ];
+
+        $this->form_validation->set_rules('id_matpel', 'Mata Pelajaran', 'required|trim');
+        $this->form_validation->set_rules('id_ustadz', 'Guru', 'required|trim');
+        $this->form_validation->set_rules('id_kelas', 'Kelas', 'required|trim');
+        $this->form_validation->set_rules('hari', 'Hari', 'required|trim');
+        $this->form_validation->set_rules('jam_mulai', 'Jam Mulai', 'required|trim');
+        $this->form_validation->set_rules('jam_selesai', 'Jam Selesai', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/dash/header', $data);
+            $this->load->view('templates/dash/sidenav', $data);
+            $this->load->view('akademik/jadwal/index', $data);
+            $this->load->view('templates/dash/footer');
+        } else {
+
+            $dataPost = [
+                'id_matpel' => $this->input->post('id_matpel', true),
+                'id_ustadz' => $this->input->post('id_ustadz', true),
+                'id_kelas' => $this->input->post('id_kelas', true),
+                'hari' => $this->input->post('hari', true),
+                'jam_mulai' => strtotime($this->input->post('jam_mulai', true)),
+                'jam_selesai' => strtotime($this->input->post('jam_selesai', true)),
+                'tgl_dibuat' => time(),
+            ];
+
+            $this->db->insert('penjadwalan', $dataPost);
+
+            $matpel = $this->db->get_where('mata_pelajaran', ['id' => $dataPost['id_matpel']])->row();
+
+            $this->session->set_flashdata('jadwal', '<div class="alert alert-success">Jadwal Mata Pelajaran <strong>' . $matpel->kode . ' - ' . $matpel->nama . '</strong> berhasil ditambahkan!!</div>');
+            redirect('akademik/jadwal');
+        }
+    }
+
+
+    public function ubahJadwal($id = '')
+    {
+        $data = [
+            'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
+            'title' => 'Ubah Jadwal',
+            'oneData' => $this->db->get_where('penjadwalan', ['id' => $id])->row(),
+            'data1' => $this->db->get('mata_pelajaran')->result(),
+            'data2' => $this->db->get('ustadz')->result(),
+            'data3' => $this->db->get('kelas')->result(),
+        ];
+
+        $this->form_validation->set_rules('id_matpel', 'Mata Pelajaran', 'required|trim');
+        $this->form_validation->set_rules('id_ustadz', 'Guru', 'required|trim');
+        $this->form_validation->set_rules('id_kelas', 'Kelas', 'required|trim');
+        $this->form_validation->set_rules('hari', 'Hari', 'required|trim');
+        $this->form_validation->set_rules('jam_mulai', 'Jam Mulai', 'required|trim');
+        $this->form_validation->set_rules('jam_selesai', 'Jam Selesai', 'required|trim');
+
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/dash/header', $data);
+            $this->load->view('templates/dash/sidenav', $data);
+            $this->load->view('akademik/jadwal/ubah', $data);
+            $this->load->view('templates/dash/footer');
+        } else {
+
+            $dataPost = [
+                'id_matpel' => $this->input->post('id_matpel', true),
+                'id_ustadz' => $this->input->post('id_ustadz', true),
+                'id_kelas' => $this->input->post('id_kelas', true),
+                'hari' => $this->input->post('hari', true),
+                'jam_mulai' => strtotime($this->input->post('jam_mulai', true)),
+                'jam_selesai' => strtotime($this->input->post('jam_selesai', true)),
+            ];
+
+            $this->db->where('id', $data['oneData']->id);
+            $this->db->update('penjadwalan', $dataPost);
+
+            $matpel = $this->db->get_where('mata_pelajaran', ['id' => $dataPost['id_matpel']])->row();
+
+            $this->session->set_flashdata('jadwal', '<div class="alert alert-success">Jadwal Mata Pelajaran <strong>' . $matpel->kode . ' - ' . $matpel->nama . '</strong> berhasil diubah!!</div>');
+            redirect('akademik/jadwal');
+        }
+    }
+
+    public function hapusJadwal($id)
+    {
+        $pel = $this->db->get_where('penjadwalan', ['id' => $id])->row();
+
+        $this->db->delete('penjadwalan', ['id' => $id]);
+
+        $this->session->set_flashdata('jadwal', '<div class="alert alert-warning">Jadwal Mata Pelajaran <strong>' . $pel->nama . '</strong> berhasil dihapus!!</div>');
+        redirect('akademik/jadwal');
+    }
+
+    public function pengumuman()
+    {
+        $data = [
+            'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
+            'title' => 'Pengumuman',
+            'dataTab' => $this->db->get('pengumuman')->result(),
+        ];
+
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi Pengumuman', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/dash/header', $data);
+            $this->load->view('templates/dash/sidenav', $data);
+            $this->load->view('akademik/pengumuman/index', $data);
+            $this->load->view('templates/dash/footer');
+        } else {
+
+            $dataPost = [
+                'deskripsi' => $this->input->post('deskripsi', true),
+                'tgl_dibuat' => time(),
+            ];
+
+            $this->db->insert('pengumuman', $dataPost);
+
+            $this->session->set_flashdata('pengumuman', '<div class="alert alert-success">Pengumuman berhasil ditambahkan!!</div>');
+            redirect('akademik/pengumuman');
+        }
+    }
+
+
+    public function ubahpengumuman($id = '')
+    {
+        $data = [
+            'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
+            'title' => 'Ubah Pengumuman',
+            'oneData' => $this->db->get_where('pengumuman', ['id' => $id])->row(),
+        ];
+
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi Pengumuman', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/dash/header', $data);
+            $this->load->view('templates/dash/sidenav', $data);
+            $this->load->view('akademik/pengumuman/ubah', $data);
+            $this->load->view('templates/dash/footer');
+        } else {
+
+            $dataPost = [
+                'deskripsi' => $this->input->post('deskripsi', true),
+            ];
+
+            $this->db->where('id', $data['oneData']->id);
+            $this->db->update('pengumuman', $dataPost);
+
+            $this->session->set_flashdata('pengumuman', '<div class="alert alert-success">Pengumuman berhasil diubah!!</div>');
+            redirect('akademik/pengumuman');
+        }
+    }
+
+    public function hapusPengumuman($id)
+    {
+        $this->db->delete('pengumuman', ['id' => $id]);
+
+        $this->session->set_flashdata('pengumuman', '<div class="alert alert-warning">Pengumuman berhasil dihapus!!</div>');
+        redirect('akademik/pengumuman');
+    }
 }

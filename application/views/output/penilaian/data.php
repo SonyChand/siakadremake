@@ -74,7 +74,6 @@
                 <span style="font-size: 15px;">SISTEM INFORMASI AKADEMIK</span><br>
                 <span style="font-size: 15px;"><?= strtoupper($title) ?></span><br>
                 <span style="font-size: 15px;"><?= base_url() ?></span><br>
-                <!-- <strong style="font-size: 15px;"><?= strtoupper($dd['puskes']); ?></strong><br> -->
             </td>
             <td style="width: 20% !important;" class="text-start">
                 <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
@@ -86,45 +85,37 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>No HP</th>
-                <th>Jenis Kelamin</th>
-                <th>Tanggal Dibuat</th>
-                <th>Status</th>
+                <th>Nama Siswa</th>
+                <th>Mata Pelajaran</th>
+                <th>Nilai</th>
+                <th>Jenis Penilaian</th>
             </tr>
         </thead>
         <tbody>
             <?php $i = 1;
             foreach ($data1 as $row) : ?>
+                <?php
+                $siswa = $this->db->get_where('siswa', ['id' => $row->id_siswa])->row();
+                $matpel = $this->db->get_where('mata_pelajaran', ['id' => $row->id_matpel])->row();
+                ?>
                 <tr>
                     <th scope="row"><?= $i++ ?></th>
-                    <td><?= $row->nama ?></td>
-                    <td><?= $row->email ?></td>
                     <td>
-                        <?php
-                        if ($row->role == 1) {
-                            echo 'Admin';
-                        } elseif ($row->role == 2) {
-                            echo 'Guru';
+                        <?php if ($siswa) {
+                            echo $siswa->nama . ' - ' . $siswa->nisn;
                         } else {
-                            echo 'Siswa';
-                        }
-                        ?>
+                            echo 'Belum ada';
+                        } ?>
                     </td>
-                    <td><?= $row->no_hp ?></td>
-                    <td><?= $row->jenis_kelamin ?></td>
-                    <td><?= tanggal_indonesia(date('Y-m-d', $row->tgl_dibuat)) ?> <?= date('H:i:s', $row->tgl_dibuat) ?></td>
                     <td>
-                        <?php
-                        if ($row->status == 0) {
-                            echo 'Nonaktif';
+                        <?php if ($matpel) {
+                            echo $matpel->nama . ' - ' . $matpel->kode;
                         } else {
-                            echo 'Aktif';
-                        }
-                        ?>
+                            echo 'Belum ada';
+                        } ?>
                     </td>
+                    <td><?= $row->nilai ?></td>
+                    <td><?= $row->jenis_penilaian ?></td>
                 </tr>
             <?php endforeach; ?>
     </table>

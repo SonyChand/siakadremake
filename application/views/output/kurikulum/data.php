@@ -30,6 +30,20 @@
             /* Adjust as needed */
         }
 
+        .tabelKOP {
+            border-collapse: collapse;
+            /* Merges borders for a clean look */
+            width: 100%;
+            /* Adjust as needed */
+        }
+
+        .tabelKOP td {
+            /* Styles table cells (both data and header cells) */
+            padding: 8px;
+            text-align: center;
+            /* Adjust as needed */
+        }
+
         .tabel1 td {
             /* Styles table cells (both data and header cells) */
             border: 1px solid #000;
@@ -51,50 +65,47 @@
 </head>
 
 <body>
-
-    <table width="100%">
+    <table class="tabelKOP" style="border-color: black !important;border-bottom-style:double !important;line-height:1.3;">
         <tr>
-            <td style="text-align: center;">
-                <h3><?= $title ?></h3>
+            <td style="width: 20% !important;" class="text-start">
+                <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
+            </td>
+            <td class="text-center">
+                <span style="font-size: 15px;">SISTEM INFORMASI AKADEMIK</span><br>
+                <span style="font-size: 15px;"><?= strtoupper($title) ?></span><br>
+                <span style="font-size: 15px;"><?= base_url() ?></span><br>
+                <!-- <strong style="font-size: 15px;"><?= strtoupper($dd['puskes']); ?></strong><br> -->
+            </td>
+            <td style="width: 20% !important;" class="text-start">
+                <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
             </td>
         </tr>
-    </table>
-
+    </table><br>
 
     <table width="100%" class="tabel1">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Invoice</th>
-                <th>Nama Pasien</th>
-                <th>No RM</th>
-                <th>NIK</th>
-                <th>Tanggal</th>
+                <th>Kurikulum</th>
+                <th>Tanggal Dibuat</th>
                 <th>Status</th>
-                <th>Nominal</th>
             </tr>
         </thead>
         <tbody>
             <?php $i = 1;
             foreach ($data1 as $row) : ?>
                 <tr>
-                    <th scope="row" style="text-align: center;"><?= $i++ ?></th>
-                    <td style="text-align: center;"><?= $row->invoice ?></td>
-                    <td style="text-align: center;"><?= $row->nama ?></td>
-                    <td style="text-align: center;"><?= $row->id_rm ?></td>
-                    <td style="text-align: center;"><?= $row->nik ?></td>
-                    <td style="text-align: center;"><?= tanggal_indonesia(date('Y-m-d', $row->tgl_dibuat)) ?> <?= date('H:i:s', $row->tgl_dibuat) ?></td>
-                    <td style="text-align: center;">
+                    <th scope="row"><?= $i++ ?></th>
+                    <td><?= $row->kurikulum ?></td>
+                    <td><?= tanggal_indonesia(date('Y-m-d', $row->tgl_dibuat)) ?> <?= date('H:i:s', $row->tgl_dibuat) ?></td>
+                    <td>
                         <?php
                         if ($row->status == 0) {
-                            echo 'Belum Bayar';
+                            echo 'Nonaktif';
                         } else {
-                            echo 'Sudah Bayar';
+                            echo 'Aktif';
                         }
                         ?>
-                    </td>
-                    <td style="text-align: right;">
-                        <?= number_format($row->nominal, 0, ',', '.') ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
