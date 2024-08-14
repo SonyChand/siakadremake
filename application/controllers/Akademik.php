@@ -136,6 +136,75 @@ class Akademik extends CI_Controller
         redirect('akademik/siswa');
     }
 
+    public function kelass()
+    {
+        $kelas = $this->db->get('kelas')->result();
+        $result = array();
+        foreach ($kelas as $row) {
+            $result['data'][] = array(
+                $row->id,
+                $row->id_ustadz,
+                $row->nama,
+                $row->status,
+                '<a class="btn btn-sm btn-primary" onclick="editKelas(' . $row->id . ')" href="#">Edit</a> <button class="btn btn-sm btn-danger" onclick="deleteKelas(' . $row->id . ')">Hapus</button>'
+            );
+        }
+        echo json_encode($result);
+    }
+
+    public function tbKelas()
+    {
+        $dataPost = [
+            'id_ustadz' => $this->input->post('id_ustadz', true),
+            'nama' => $this->input->post('nama', true),
+            'status' => $this->input->post('status', true),
+            'tgl_dibuat' => time(),
+        ];
+
+        $insert = $this->db->insert('kelas', $dataPost);
+        echo json_encode($insert);
+    }
+
+    public function getKelas()
+    {
+        $id = $this->input->post('id', true);
+        $resultData = $this->db->get_where('kelas', ['id' => $id])->row();
+        echo json_encode($resultData);
+    }
+
+    public function editKelas()
+    {
+        $dataPost = [
+            'id_ustadz' => $this->input->post('id_ustadz', true),
+            'nama' => $this->input->post('nama', true),
+            'status' => $this->input->post('status', true)
+        ];
+
+        $update = $this->db->update('kelas', $dataPost, ['id' => $this->input->post('id', true)]);
+        if ($update == true) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function deleteKelas()
+    {
+        $id = $this->input->post('id', true);
+        $delete = $this->db->delete('kelas', ['id' => $id]);
+        $count = $this->db->get('kelas')->num_rows();
+        if ($delete == true) {
+            $success = 1;
+        } else {
+            $success = 2;
+        }
+        $data = [
+            'success' => $success,
+            'count' => $count
+        ];
+        echo json_encode($data);
+    }
+
 
     public function kelas()
     {

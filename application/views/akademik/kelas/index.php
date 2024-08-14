@@ -45,14 +45,14 @@
 
                         <!-- Table with stripped rows -->
                     </div>
-                    <div class="modal fade" id="addRowModal" tabindex="-1">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Tambah <?= $title ?></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form method="POST">
+                    <form id="tbKelas">
+                        <div class="modal fade" id="addRowModal" tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Tambah <?= $title ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
                                     <div class="modal-body">
                                         <div class="row mb-3">
                                             <div class="col-md-6">
@@ -88,12 +88,64 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <input type="submit" name="submit<?= $title ?>" class="btn btn-outline-success" value="Tambah">
+                                        <button type="submit" class="btn btn-outline-success">Tambah</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End Basic Modal-->
+                    </form>
+
+                    <div class="modal" id="editModal" tabindex="-1">
+                        <div class="modal-dialog modal-lg static">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit <?= $title ?></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form id="editKelas">
+                                    <div class="modal-body">
+                                        <input type="hidden" name="id" id="editId">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="id_ustadz" class="form-label">Walikelas</label>
+                                                <select id="editIdUstadz" class="form-select" name="id_ustadz" required>
+                                                    <option value="" hidden>
+                                                        Pilih Walikelas
+                                                    </option>
+                                                    <?php foreach ($data1 as $row) : ?>
+                                                        <option value="<?= $row->id ?>"><?= $row->email ?> (<?= $row->nama ?>)</option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <?= form_error('id_ustadz', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="nama" class="form-label">Nama Kelas</label>
+                                                <input type="text" class="form-control" name="nama" id="editNama" required>
+                                                <?= form_error('nama', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="status" class="form-label">Status Kelas</label>
+                                                <select id="editStatus" class="form-select" name="status" required>
+                                                    <option value="" hidden>
+                                                        Pilih Status Kelas
+                                                    </option>
+                                                    <option value="1">Aktif</option>
+                                                    <option value="0">Nonaktif</option>
+                                                </select>
+                                                <?= form_error('status', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-outline-success">Simpan</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div><!-- End Basic Modal-->
+
                     <div class="card-body">
                         <?= $this->session->flashdata('kelas'); ?>
                         <div class="table-responsive">
@@ -120,42 +172,6 @@
                                         <th></th>
                                     </tr>
                                 </tfoot>
-
-                                <tbody>
-                                    <?php $i = 1 ?>
-                                    <?php foreach ($dataTab as $row) : ?>
-                                        <tr>
-                                            <td><?= $i++ ?></td>
-                                            <td>
-                                                <?php $akun = $this->db->get_where('pengguna', ['id' => $row->id_ustadz])->row();
-                                                if ($akun) {
-                                                    echo $akun->email . ' - ' . $akun->nama;
-                                                } else {
-                                                    echo 'Belum ada';
-                                                }
-                                                ?>
-                                            </td>
-                                            <td><?= $row->nama ?></td>
-                                            <td>
-                                                <?php
-                                                if ($row->status == 1) {
-                                                    echo "Aktif";
-                                                } else {
-                                                    echo "Nonaktif";
-                                                }
-                                                ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="<?= base_url('akademik/ubah') . $title . '/' . $row->id ?>">
-                                                    <span class="badge bg-warning"><i class="bi bi-pencil-square me-1"></i> Ubah</span>
-                                                </a>
-                                                <a href="<?= base_url('akademik/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
-                                                    <span class="badge bg-danger"><i class="bi bi-trash me-1"></i> Hapus</span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -166,12 +182,15 @@
     </div>
 </div>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function() {
-        $("#basic-datatables").DataTable({});
-
         $("#kuntul").DataTable({
+            ajax: '<?= base_url('akademik/kelass') ?>',
+            order: [],
             pageLength: 10,
+            language: {
+                zeroRecords: "No Data"
+            },
             initComplete: function() {
                 this.api()
                     .columns()
@@ -201,25 +220,92 @@
                     });
             },
         });
+    });
 
-        // Add Row
-        $("#add-row").DataTable({
-            pageLength: 10,
-        });
+    function editKelas(id) {
+        $.ajax({
+            url: '<?= base_url('akademik/getKelas') ?>',
+            data: {
+                id: id
+            },
+            method: 'post',
+            dataType: 'json',
+            success: function(response) {
+                $("#editId").val(response.id);
+                $("#editIdUstadz").val(response.id_ustadz);
+                $("#editNama").val(response.nama);
+                $("#editStatus").val(response.status);
+                $("#editModal").modal('show');
+            },
+            error: function() {
+                alert('Error occurred during AJAX request');
+            }
+        })
+    }
 
-        var action =
-            '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+    function deleteKelas(id) {
+        $.ajax({
+            url: '<?= base_url('akademik/deleteKelas') ?>',
+            data: {
+                id: id
+            },
+            method: 'post',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success == 1) {
+                    if (response.count == 0) {
+                        location.reload();
+                    }
+                    $("#kuntul").DataTable().ajax.reload();
+                }
+            },
+            error: function() {
+                alert('Error occurred during AJAX request');
+            }
+        })
+    }
+</script>
 
-        $("#addRowButton").click(function() {
-            $("#add-row")
-                .dataTable()
-                .fnAddData([
-                    $("#addName").val(),
-                    $("#addPosition").val(),
-                    $("#addOffice").val(),
-                    action,
-                ]);
-            $("#addRowModal").modal("hide");
-        });
+<script>
+    $("#tbKelas").submit(function() {
+        event.preventDefault();
+        $.ajax({
+            url: '<?= base_url('akademik/tbKelas') ?>',
+            data: $("#tbKelas").serialize(),
+            type: 'post',
+            dataType: 'json',
+            success: function(response) {
+                $("#addRowModal").modal('hide');
+                $("#tbKelas")[0].reset();
+                alert('Uhuy');
+                $("#kuntul").DataTable().ajax.reload();
+            },
+            error: function() {
+                alert('Error occurred during AJAX request');
+            }
+        })
+    });
+
+    $("#editKelas").submit(function() {
+        event.preventDefault();
+        $.ajax({
+            url: '<?= base_url('akademik/editKelas') ?>',
+            data: $("#editKelas").serialize(),
+            type: 'post',
+            dataType: 'json',
+            success: function(response) {
+                $("#editModal").modal('hide');
+                $("#editKelas")[0].reset();
+                if (response == 1) {
+                    alert('Uhsuy');
+                } else {
+                    alert('Kuntul');
+                }
+                $("#kuntul").DataTable().ajax.reload();
+            },
+            error: function() {
+                alert('Error occurred during AJAX request');
+            }
+        })
     });
 </script>
