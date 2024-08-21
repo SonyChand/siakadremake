@@ -525,6 +525,16 @@ class Akademik extends CI_Controller
                 'nama' => $this->input->post('nama', true),
                 'deskripsi' => $this->input->post('deskripsi', true),
                 'silabus' => $sila,
+                'b1' => $this->input->post('b1', true),
+                'b2' => $this->input->post('b2', true),
+                'b3' => $this->input->post('b3', true),
+                'b4' => $this->input->post('b4', true),
+                'b5' => $this->input->post('b5', true),
+                'b6' => $this->input->post('b6', true),
+                'g1' => $this->input->post('g1', true),
+                'g2' => $this->input->post('g2', true),
+                'g3' => $this->input->post('g3', true),
+                'g4' => $this->input->post('g4', true),
                 'tgl_dibuat' => time(),
             ];
 
@@ -593,6 +603,16 @@ class Akademik extends CI_Controller
                 'kode' => $this->input->post('kode', true),
                 'nama' => $this->input->post('nama', true),
                 'deskripsi' => $this->input->post('deskripsi', true),
+                'b1' => $this->input->post('b1', true),
+                'b2' => $this->input->post('b2', true),
+                'b3' => $this->input->post('b3', true),
+                'b4' => $this->input->post('b4', true),
+                'b5' => $this->input->post('b5', true),
+                'b6' => $this->input->post('b6', true),
+                'g1' => $this->input->post('g1', true),
+                'g2' => $this->input->post('g2', true),
+                'g3' => $this->input->post('g3', true),
+                'g4' => $this->input->post('g4', true),
             ];
 
             $this->db->where('id', $data['oneData']->id);

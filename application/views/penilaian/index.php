@@ -137,6 +137,18 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="output" class="form-label">Output</label>
+                                                <select id="output" class="form-select" name="output" required>
+                                                    <option value="" hidden>
+                                                        Pilih Output
+                                                    </option>
+                                                    <option value="rekap">Rekap</option>
+                                                    <option value="rapor">Rapor</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-outline-success">Download</button>

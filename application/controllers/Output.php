@@ -156,32 +156,61 @@ class Output extends CI_Controller
 
     public function dataNilai()
     {
-        $this->db->order_by('id_siswa', 'ASC');
-        $this->db->order_by('id_matpel', 'ASC');
-        $this->db->order_by('jenis_penilaian', 'ASC');
-        $this->db->order_by('nilai', 'ASC');
-        if ($this->input->post('id_siswa', true) == 'all' && $this->input->post('id_matpel', true) == 'all') {
-            $data1 = $this->db->get('penilaian')->result();
-        } elseif ($this->input->post('id_siswa', true) != 'all' && $this->input->post('id_matpel', true) == 'all') {
-            $data1 = $this->db->get_where('penilaian', ['id_siswa' => $this->input->post('id_siswa', true)])->result();
-        } elseif ($this->input->post('id_siswa', true) == 'all' && $this->input->post('id_matpel', true) != 'all') {
-            $data1 = $this->db->get_where('penilaian', ['id_matpel' => $this->input->post('id_matpel', true)])->result();
-        } elseif ($this->input->post('id_siswa', true) != 'all' && $this->input->post('id_matpel', true) != 'all') {
-            $data1 = $this->db->get_where('penilaian', ['id_siswa' => $this->input->post('id_siswa', true), 'id_matpel' => $this->input->post('id_matpel', true)])->result();
+        if ($this->input->post('output', true) != 'rapor') {
+            $this->db->order_by('id_siswa', 'ASC');
+            $this->db->order_by('id_matpel', 'ASC');
+            $this->db->order_by('jenis_penilaian', 'ASC');
+            $this->db->order_by('nilai', 'ASC');
+            if ($this->input->post('id_siswa', true) == 'all' && $this->input->post('id_matpel', true) == 'all') {
+                $data1 = $this->db->get('penilaian')->result();
+            } elseif ($this->input->post('id_siswa', true) != 'all' && $this->input->post('id_matpel', true) == 'all') {
+                $data1 = $this->db->get_where('penilaian', ['id_siswa' => $this->input->post('id_siswa', true)])->result();
+            } elseif ($this->input->post('id_siswa', true) == 'all' && $this->input->post('id_matpel', true) != 'all') {
+                $data1 = $this->db->get_where('penilaian', ['id_matpel' => $this->input->post('id_matpel', true)])->result();
+            } elseif ($this->input->post('id_siswa', true) != 'all' && $this->input->post('id_matpel', true) != 'all') {
+                $data1 = $this->db->get_where('penilaian', ['id_siswa' => $this->input->post('id_siswa', true), 'id_matpel' => $this->input->post('id_matpel', true)])->result();
+            } else {
+                redirect('akademik/penilaian');
+            }
+
+            $data = [
+                'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
+                'title' => 'Laporan Nilai',
+                'data1' => $data1,
+            ];
+
+            $file_pdf = strtolower($data['title']);
+            $paper = 'A4';
+            $orientation = 'Portrait';
+            $html = $this->load->view('output/penilaian/data', $data, true);
         } else {
-            redirect('akademik/penilaian');
+            $this->db->order_by('id_siswa', 'ASC');
+            $this->db->order_by('id_matpel', 'ASC');
+            $this->db->order_by('nilai', 'ASC');
+            $this->db->order_by('grade', 'ASC');
+            if ($this->input->post('id_siswa', true) == 'all' && $this->input->post('id_matpel', true) == 'all') {
+                $data1 = $this->db->get('rapor')->result();
+            } elseif ($this->input->post('id_siswa', true) != 'all' && $this->input->post('id_matpel', true) == 'all') {
+                $data1 = $this->db->get_where('rapor', ['id_siswa' => $this->input->post('id_siswa', true)])->result();
+            } elseif ($this->input->post('id_siswa', true) == 'all' && $this->input->post('id_matpel', true) != 'all') {
+                $data1 = $this->db->get_where('rapor', ['id_matpel' => $this->input->post('id_matpel', true)])->result();
+            } elseif ($this->input->post('id_siswa', true) != 'all' && $this->input->post('id_matpel', true) != 'all') {
+                $data1 = $this->db->get_where('rapor', ['id_siswa' => $this->input->post('id_siswa', true), 'id_matpel' => $this->input->post('id_matpel', true)])->result();
+            } else {
+                redirect('akademik/penilaian');
+            }
+
+            $data = [
+                'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
+                'title' => 'Laporan Nilai',
+                'data1' => $data1,
+            ];
+
+            $file_pdf = strtolower($data['title']);
+            $paper = 'A4';
+            $orientation = 'Portrait';
+            $html = $this->load->view('output/penilaian/rapor', $data, true);
         }
-
-        $data = [
-            'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
-            'title' => 'Laporan Nilai',
-            'data1' => $data1,
-        ];
-
-        $file_pdf = strtolower($data['title']);
-        $paper = 'A4';
-        $orientation = 'Portrait';
-        $html = $this->load->view('output/penilaian/data', $data, true);
 
 
         $this->print($html, $file_pdf, $paper, $orientation);

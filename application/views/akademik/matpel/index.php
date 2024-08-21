@@ -82,8 +82,110 @@
                                                 <span class="small"><strong style="font-size: 10px;line-height:0.1;">Ukuran File tidak melebihi 5 MB dan Format (PDF/DOC/DOCX)</strong></span>
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
 
+                                        <h6 class="text-center mt-3">Bobot Nilai (Isi yang sesuai dan Kosongkan yang tidak perlu)</h6>
+                                        <div class="row mb-3">
+                                            <div class="form-group col-md-4">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">Kehadiran</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="b1" id="b1" min="0" max="50" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">Tugas</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="b2" id="b2" min="0" max="50" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">UTS</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="b3" id="b3" min="0" max="50" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="form-group col-md-4">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">UAS</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="b4" id="b4" min="0" max="50" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">Sikap</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="b5" id="b5" min="0" max="50" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">Quiz</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="b6" id="b6" min="0" max="50" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h6 class="text-center mt-3">Minimal Grade Nilai</h6>
+                                        <div class="row mb-3">
+                                            <div class="form-group col-md-3">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">D</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="g1" id="g1" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">C</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="g2" id="g2" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">B</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="g3" id="g3" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text">A</span>
+                                                    <input
+                                                        type="number"
+                                                        class="form-control"
+                                                        name="g4" id="g4" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -144,7 +246,7 @@
                                                 <a href="<?= base_url('akademik/ubahMatpel/') . $row->id ?>">
                                                     <span class="badge bg-warning"><i class="bi bi-pencil-square me-1"></i> Ubah</span>
                                                 </a>
-                                                <a href="<?= base_url('akademik/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
+                                                <a href="<?= base_url('akademik/hapusMatpel/') . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
                                                     <span class="badge bg-danger"><i class="bi bi-trash me-1"></i> Hapus</span>
                                                 </a>
                                             </td>

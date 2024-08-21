@@ -41,13 +41,146 @@ class Penilaian extends CI_Controller
                 'tgl_dibuat' => time(),
             ];
 
+
             $this->db->insert('penilaian', $dataPost);
+            $this->kalkulasiNilai($this->input->post('id_matpel', true), $this->input->post('id_siswa', true));
 
             $siswa = $this->db->get_where('siswa', ['id' => $dataPost['id_siswa']])->row();
             $matpel = $this->db->get_where('mata_pelajaran', ['id' => $dataPost['id_matpel']])->row();
 
             $this->session->set_flashdata('penilaian', '<div class="alert alert-success">Nilai Siswa <strong>' . $siswa->nama . '</strong> pada Mata Pelajaran <strong>' . $matpel->nama . '</strong> berhasil ditambahkan!!</div>');
             redirect('penilaian/penilaian');
+        }
+    }
+
+    private function kalkulasiNilai($id_matpel, $id_siswa)
+    {
+        $matpel = $this->db->get_where('mata_pelajaran', ['id' => $id_matpel])->row();
+        $i = 1;
+        $this->db->select_avg('nilai');
+        $this->db->like('jenis_penilaian', 'kehadiran');
+        $query1 = $this->db->get_where('penilaian', [
+            'id_matpel' => $id_matpel,
+            'id_siswa' => $id_siswa,
+            'nilai !=' => null
+        ]);
+        if ($query1->row()->nilai != null) {
+            $nilaiKehadiran = $query1->row()->nilai * $matpel->b1 / 100;
+            $i++;
+        } else {
+            $nilaiKehadiran = 0;
+        }
+
+        $this->db->select_avg('nilai');
+        $this->db->like('jenis_penilaian', 'tugas');
+        $query2 = $this->db->get_where('penilaian', [
+            'id_matpel' => $id_matpel,
+            'id_siswa' => $id_siswa,
+            'nilai !=' => null
+        ]);
+        if ($query2->row()->nilai != null) {
+            $nilaiTugas = $query2->row()->nilai * $matpel->b2 / 100;
+            $i++;
+        } else {
+            $nilaiTugas = 0;
+        }
+
+        $this->db->select_avg('nilai');
+        $this->db->like('jenis_penilaian', 'uts');
+        $query3 = $this->db->get_where('penilaian', [
+            'id_matpel' => $id_matpel,
+            'id_siswa' => $id_siswa,
+            'nilai !=' => null
+        ]);
+        if ($query3->row()->nilai != null) {
+            $nilaiUTS = $query3->row()->nilai * $matpel->b3 / 100;
+            $i++;
+        } else {
+            $nilaiUTS = 0;
+        }
+
+        $this->db->select_avg('nilai');
+        $this->db->like('jenis_penilaian', 'uas');
+        $query4 = $this->db->get_where('penilaian', [
+            'id_matpel' => $id_matpel,
+            'id_siswa' => $id_siswa,
+            'nilai !=' => null
+        ]);
+        if ($query4->row()->nilai != null) {
+            $nilaiUAS = $query4->row()->nilai * $matpel->b4 / 100;
+            $i++;
+        } else {
+            $nilaiUAS = 0;
+        }
+
+        $this->db->select_avg('nilai');
+        $this->db->like('jenis_penilaian', 'sikap');
+        $query5 = $this->db->get_where('penilaian', [
+            'id_matpel' => $id_matpel,
+            'id_siswa' => $id_siswa,
+            'nilai !=' => null
+        ]);
+        if ($query5->row()->nilai != null) {
+            $nilaiSikap = $query5->row()->nilai * $matpel->b5 / 100;
+            $i++;
+        } else {
+            $nilaiSikap = 0;
+        }
+
+        $this->db->select_avg('nilai');
+        $this->db->like('jenis_penilaian', 'quiz');
+        $query6 = $this->db->get_where('penilaian', [
+            'id_matpel' => $id_matpel,
+            'id_siswa' => $id_siswa,
+            'nilai !=' => null
+        ]);
+        if ($query6->row()->nilai != null) {
+            $nilaiQuiz = $query6->row()->nilai * $matpel->b6 / 100;
+            $i++;
+        } else {
+            $nilaiQuiz = 0;
+        }
+
+        $totalNilai = ($nilaiKehadiran + $nilaiTugas + $nilaiUTS + $nilaiUAS + $nilaiSikap + $nilaiQuiz);
+        $this->kalkulasiGrade($id_matpel, $id_siswa, $totalNilai);
+    }
+
+    private function kalkulasiGrade($id_matpel, $id_siswa, $totalNilai)
+    {
+        $totalNilai = number_format($totalNilai, 0);
+        $matpel = $this->db->get_where('mata_pelajaran', ['id' => $id_matpel])->row();
+        if ($totalNilai >= $matpel->g1 && $totalNilai < $matpel->g2) {
+            $grade = 'D';
+        } elseif ($totalNilai >= $matpel->g2 && $totalNilai < $matpel->g3) {
+            $grade = 'C';
+        } elseif ($totalNilai >= $matpel->g3 && $totalNilai < $matpel->g4) {
+            $grade = 'B';
+        } elseif ($totalNilai >= $matpel->g4 && $totalNilai <= 100) {
+            $grade = 'A';
+        } else {
+            $grade = 'E';
+        }
+
+        $dataNilai = [
+            'id_siswa' => $id_siswa,
+            'id_matpel' => $id_matpel,
+            'nilai' => $totalNilai,
+            'grade' => $grade
+        ];
+
+        $cekData = $this->db->get_where('rapor', [
+            'id_siswa' => $id_siswa,
+            'id_matpel' => $id_matpel
+        ]);
+
+        if ($cekData->num_rows() == 0) {
+            $this->db->insert('rapor', $dataNilai);
+        } else {
+            $this->db->where([
+                'id_siswa' => $id_siswa,
+                'id_matpel' => $id_matpel
+            ]);
+            $this->db->update('rapor', $dataNilai);
         }
     }
 
@@ -85,6 +218,8 @@ class Penilaian extends CI_Controller
 
             $this->db->where('id', $data['oneData']->id);
             $this->db->update('penilaian', $dataPost);
+
+            $this->kalkulasiNilai($this->input->post('id_matpel', true), $this->input->post('id_siswa', true));
 
             $siswa = $this->db->get_where('siswa', ['id' => $dataPost['id_siswa']])->row();
             $matpel = $this->db->get_where('mata_pelajaran', ['id' => $dataPost['id_matpel']])->row();
