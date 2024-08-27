@@ -18,9 +18,11 @@
                 if ($user->role == 1) {
                     $namaRole = 'Admin';
                 } elseif ($user->role == 2) {
-                    $namaRole = 'Advokat';
+                    $namaRole = 'Kepala Sekolah';
+                } elseif ($user->role == 3) {
+                    $namaRole = 'Guru/Ustadz';
                 } else {
-                    $namaRole = 'Klien';
+                    $namaRole = 'Siswa';
                 }
                 ?>
                 <div class="card">
@@ -51,6 +53,11 @@
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
                             </li>
+                            <?php if ($user->role == 4): ?>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#biodata">Biodata</button>
+                                </li>
+                            <?php endif; ?>
 
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
@@ -95,11 +102,13 @@
                                     <div class="col-lg-9 col-md-8">
                                         <?php
                                         if ($user->role == 1) {
-                                            echo "Admin";
+                                            echo 'Admin';
                                         } elseif ($user->role == 2) {
-                                            echo "Advokat";
+                                            echo 'Kepala Sekolah';
+                                        } elseif ($user->role == 3) {
+                                            echo 'Guru/Ustadz';
                                         } else {
-                                            echo "Klien";
+                                            echo 'Siswa';
                                         }
                                         ?>
                                     </div>
@@ -107,6 +116,124 @@
 
                             </div>
 
+                            <?php if ($user->role == 4): ?>
+                                <?php
+                                $siswa = $this->db->get_where('siswa', ['id_user' => $user->id])->row();
+                                ?>
+
+                                <div class="tab-pane fade show pt-3" id="biodata">
+                                    <form method="post">
+
+                                        <div class="row mb-3">
+                                            <label for="nama" class="col-md-4 col-lg-3 col-form-label">Nama</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="nama" type="text" class="form-control" id="nama" value="<?= $siswa->nama ?>" readonly>
+                                                <?= form_error('nama', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="nik" class="col-md-4 col-lg-3 col-form-label">NIK</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="text" class="form-control" id="nik" value="<?= hideNik($siswa->nik) ?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="no_kk" class="col-md-4 col-lg-3 col-form-label">No KK</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="text" class="form-control" id="no_kk" value="<?= hideNik($siswa->no_kk) ?>" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="nisn" class="col-md-4 col-lg-3 col-form-label">NISN</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="text" class="form-control" id="nisn" value="<?= $siswa->nisn ?>" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="tpt_lahir" class="col-md-4 col-lg-3 col-form-label">Tempat Lahir</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="tpt_lahir" type="text" class="form-control" id="tpt_lahir" value="<?= $siswa->tpt_lahir ?>">
+                                                <?= form_error('tpt_lahir', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="tgl_lahir" class="col-md-4 col-lg-3 col-form-label">Tanggal Lahir</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="tgl_lahir" type="date" class="form-control" id="tgl_lahir" value="<?= date('Y-m-d', $siswa->tgl_lahir) ?>">
+                                                <?= form_error('tgl_lahir', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="no_hp" class="col-md-4 col-lg-3 col-form-label">No Handphone</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="no_hp" type="tel" class="form-control" id="no_hp" value="<?= $siswa->no_hp ?>">
+                                                <?= form_error('no_hp', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="jk" class="col-md-4 col-lg-3 col-form-label">Jenis Kelamin</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <select id="jk" class="form-select" name="jk">
+                                                    <option value="<?= $siswa->jk ?>" hidden>
+                                                        <?php if ($siswa->jk == 'L') : ?>
+                                                            Laki-laki
+                                                        <?php else : ?>
+                                                            Perempuan
+                                                        <?php endif; ?>
+                                                    </option>
+                                                    <option value="L">Laki-laki</option>
+                                                    <option value="P">Perempuan</option>
+                                                </select>
+                                                <?= form_error('jenis_kelamin', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="agama" class="col-md-4 col-lg-3 col-form-label">Agama</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="agama" type="text" class="form-control" id="agama" value="<?= $siswa->agama ?>">
+                                                <?= form_error('agama', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="cita_cita" class="col-md-4 col-lg-3 col-form-label">Cita-cita</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="cita_cita" type="text" class="form-control" id="cita_cita" value="<?= $siswa->cita_cita ?>">
+                                                <?= form_error('cita_cita', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="hobi" class="col-md-4 col-lg-3 col-form-label">Hobi</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="hobi" type="text" class="form-control" id="hobi" value="<?= $siswa->hobi ?>">
+                                                <?= form_error('hobi', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="nama_ayah" class="col-md-4 col-lg-3 col-form-label">Nama Ayah</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="nama_ayah" type="text" class="form-control" id="nama_ayah" value="<?= $siswa->nama_ayah ?>">
+                                                <?= form_error('nama_ayah', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="alamat" class="col-md-4 col-lg-3 col-form-label">Alamat</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <textarea name="alamat" id="alamat" class="form-control" rows="3"><?= $siswa->alamat ?></textarea>
+                                                <?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="text-center">
+                                            <input type="submit" name="submitBiodata" class="btn btn-primary" value="Simpan Perubahan">
+                                        </div>
+                                    </form><!-- End Profile Edit Form -->
+                                </div>
+                            <?php endif; ?>
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
 

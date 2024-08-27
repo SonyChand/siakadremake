@@ -7,7 +7,7 @@ class Admin extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		supreme();
+		admin();
 		date_default_timezone_set('Asia/Jakarta');
 	}
 
@@ -16,7 +16,6 @@ class Admin extends CI_Controller
 		$data = [
 			'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
 			'title' => 'Pengguna',
-			'crumb' => 'Admin',
 			'dataTab' => $this->db->get_where('pengguna', ['email !=' => $this->session->userdata('email')])->result()
 		];
 
@@ -62,6 +61,23 @@ class Admin extends CI_Controller
 
 			$this->db->insert('pengguna', $dataUser);
 
+			$userData = $this->db->get_where('pengguna', ['email' => $dataUser['email']])->row();
+
+			if ($dataUser['role'] == 4) {
+				$siswa = $this->db->get_where('siswa', ['id_user' => $userData->id])->row();
+				if ($siswa->email != true) {
+					$dataSiswa = [
+						'id_user' => $userData->id,
+						'nama' => $userData->nama,
+						'jk' => $userData->jenis_kelamin,
+						'no_hp' => $userData->no_hp,
+						'tgl_dibuat' => time()
+					];
+
+					$this->db->insert('siswa', $dataSiswa);
+				}
+			}
+
 			$this->session->set_flashdata('pengguna', '<div class="alert alert-success">Pengguna baru dengan email <strong>' . $this->input->post('email', true) . '</strong> berhasil ditambahkan!!</div>');
 			redirect('admin/pengguna');
 		}
@@ -83,9 +99,6 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('no_hp', 'No Handphone', 'required|trim', [
 			'required' => '<strong>{field}</strong> tidak boleh kosong!'
 		]);
-		$this->form_validation->set_rules('role', 'Akses Pengguna', 'required|trim', [
-			'required' => '<strong>{field}</strong> tidak boleh kosong!'
-		]);
 		$this->form_validation->set_rules('status', 'Status Akun', 'required|trim', [
 			'required' => '<strong>{field}</strong> tidak boleh kosong!'
 		]);
@@ -101,7 +114,6 @@ class Admin extends CI_Controller
 
 			$dataUser = [
 				'nama' => $this->input->post('nama', true),
-				'role' => $this->input->post('role', true),
 				'no_hp' => str_replace(' ', '', str_replace('+', '', $this->input->post('no_hp', true))),
 				'jenis_kelamin' => $this->input->post('jenis_kelamin', true),
 				'status' => $this->input->post('status', true)

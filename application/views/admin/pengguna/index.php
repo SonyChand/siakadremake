@@ -92,7 +92,9 @@
                                                         Pilih Akses
                                                     </option>
                                                     <option value="1">Admin</option>
-                                                    <option value="2">Ustadz</option>
+                                                    <option value="2">Kepala Sekolah</option>
+                                                    <option value="3">Ustadz/Guru</option>
+                                                    <option value="4">Siswa</option>
                                                 </select>
                                                 <?= form_error('role', '<small class="text-danger">', '</small>'); ?>
                                             </div>
@@ -158,8 +160,12 @@
                                                 <?php
                                                 if ($row->role == 1) {
                                                     echo "Admin";
+                                                } elseif ($row->role == 2) {
+                                                    echo "Kepala Sekolah";
+                                                } elseif ($row->role == 3) {
+                                                    echo "Ustadz/Guru";
                                                 } else {
-                                                    echo "Ustadz";
+                                                    echo "Siswa";
                                                 }
                                                 ?>
                                             </td>

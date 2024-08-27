@@ -45,6 +45,18 @@ class Profil extends CI_Controller
             ]);
         }
 
+        if ($this->input->post('submitBiodata', true)) {
+            $this->form_validation->set_rules('tpt_lahir', 'Tempat Lahir', 'required|trim');
+            $this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required|trim');
+            $this->form_validation->set_rules('no_hp', 'Nomor Handphone', 'required|trim');
+            $this->form_validation->set_rules('jk', 'Jenis Kelamin', 'required|trim');
+            $this->form_validation->set_rules('agama', 'Agama', 'required|trim');
+            $this->form_validation->set_rules('cita_cita', 'Cita-cita', 'required|trim');
+            $this->form_validation->set_rules('hobi', 'Hobi', 'required|trim');
+            $this->form_validation->set_rules('nama_ayah', 'Nama Ayah', 'required|trim');
+            $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
+        }
+
         if ($this->form_validation->run() == false) {
 
             $this->load->view('templates/dash/header', $data);
@@ -139,6 +151,39 @@ class Profil extends CI_Controller
                     $isiPesan = '
                         <div class="alert alert-success alert-dismissible fade show border border-dark" role="alert">
                         <strong>Profil Anda</strong> telah diubah
+                        </div>';
+                    $this->session->set_flashdata('profil', $isiPesan);
+                    redirect('profil');
+                } elseif ($this->input->post('submitBiodata', true)) {
+                    $email = $this->session->userdata('email');
+                    $blabla = $this->db->get_where('pengguna', ['email' => $email])->row();
+
+                    $dataUser = [
+                        'no_hp' => $this->input->post('no_hp', true),
+                        'jenis_kelamin' => $this->input->post('jk', true),
+                    ];
+
+                    $this->db->where('email', $this->session->userdata('email'));
+                    $this->db->update('pengguna', $dataUser);
+
+                    $dataUser = [
+                        'tpt_lahir' => $this->input->post('tpt_lahir', true),
+                        'tgl_lahir' => strtotime($this->input->post('tgl_lahir', true)),
+                        'jk' => $this->input->post('jk', true),
+                        'no_hp' => $this->input->post('no_hp', true),
+                        'agama' => $this->input->post('agama', true),
+                        'cita_cita' => $this->input->post('cita_cita', true),
+                        'hobi' => $this->input->post('hobi', true),
+                        'nama_ayah' => $this->input->post('nama_ayah', true),
+                        'alamat' => $this->input->post('alamat', true),
+                    ];
+
+                    $this->db->where('id_user', $blabla->id);
+                    $this->db->update('siswa', $dataUser);
+
+                    $isiPesan = '
+                        <div class="alert alert-success alert-dismissible fade show border border-dark" role="alert">
+                        <strong>Biodata Anda</strong> telah diubah
                         </div>';
                     $this->session->set_flashdata('profil', $isiPesan);
                     redirect('profil');

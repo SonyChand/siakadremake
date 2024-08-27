@@ -32,7 +32,15 @@ class Auth extends CI_Controller
 			$this->load->view('templates/auth/footer');
 		} else {
 			$this->_login();
-			redirect('dashboard');
+			if ($this->session->userdata('role') == 1) {
+				redirect('dashboard');
+			} elseif ($this->session->userdata('role') == 2) {
+				redirect('laporan');
+			} elseif ($this->session->userdata('role') == 3) {
+				redirect('penilaian/penilaian');
+			} else {
+				redirect('siswa/nilai');
+			}
 		}
 	}
 

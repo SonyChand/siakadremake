@@ -7,7 +7,7 @@ class Penilaian extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        super();
+        guru();
         date_default_timezone_set('Asia/Jakarta');
     }
 

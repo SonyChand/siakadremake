@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class UI extends CI_Controller
+class Layout extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        supreme();
+        admin();
         date_default_timezone_set('Asia/Jakarta');
     }
 
@@ -38,7 +38,7 @@ class UI extends CI_Controller
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/dash/header', $data);
             $this->load->view('templates/dash/sidenav', $data);
-            $this->load->view('ui/menu/index', $data);
+            $this->load->view('layout/menu/index', $data);
             $this->load->view('templates/dash/footer');
         } else {
             if ($this->input->post('submit' . $data['title'], true)) {
@@ -52,7 +52,7 @@ class UI extends CI_Controller
                 ];
                 $this->db->insert('menu', $dataForm);
                 $this->session->set_flashdata('menu', '<div class="alert alert-success mt-4"><strong>Menu</strong> berhasil ditambahkan!!</div>');
-                redirect('ui/menu');
+                redirect('layout/menu');
             }
         }
     }
@@ -89,7 +89,7 @@ class UI extends CI_Controller
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/dash/header', $data);
             $this->load->view('templates/dash/sidenav', $data);
-            $this->load->view('ui/menu/ubah', $data);
+            $this->load->view('layout/menu/ubah', $data);
             $this->load->view('templates/dash/footer');
         } else {
             $dataForm = [
@@ -103,7 +103,7 @@ class UI extends CI_Controller
             $this->db->where('id', $this->input->post('id', true));
             $this->db->update('menu', $dataForm);
             $this->session->set_flashdata('menu', '<div class="alert alert-info mt-4"><strong>Menu</strong> berhasil diubah!!</div>');
-            redirect('ui/menu');
+            redirect('layout/menu');
         }
     }
 
@@ -115,7 +115,7 @@ class UI extends CI_Controller
         $this->db->delete('menu', ['id' => $id]);
 
         $this->session->set_flashdata('menu', '<div class="alert alert-warning mt-2">Menu <strong>' . $side->menu . ' </strong>berhasil dihapus!!</div>');
-        redirect('ui/menu');
+        redirect('layout/menu');
     }
 
     public function submenu()
@@ -147,7 +147,7 @@ class UI extends CI_Controller
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/dash/header', $data);
             $this->load->view('templates/dash/sidenav', $data);
-            $this->load->view('ui/submenu/index', $data);
+            $this->load->view('layout/submenu/index', $data);
             $this->load->view('templates/dash/footer');
         } else {
             if ($this->input->post('submit' . $data['title'], true)) {
@@ -160,7 +160,7 @@ class UI extends CI_Controller
                 ];
                 $this->db->insert('submenu', $dataForm);
                 $this->session->set_flashdata('submenu', '<div class="alert alert-success mt-4"><strong>Submenu</strong> berhasil ditambahkan!!</div>');
-                redirect('ui/submenu');
+                redirect('layout/submenu');
             }
         }
     }
@@ -195,7 +195,7 @@ class UI extends CI_Controller
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/dash/header', $data);
             $this->load->view('templates/dash/sidenav', $data);
-            $this->load->view('ui/submenu/ubah', $data);
+            $this->load->view('layout/submenu/ubah', $data);
             $this->load->view('templates/dash/footer');
         } else {
             $dataForm = [
@@ -208,7 +208,7 @@ class UI extends CI_Controller
             $this->db->where('id', $this->input->post('id', true));
             $this->db->update('submenu', $dataForm);
             $this->session->set_flashdata('submenu', '<div class="alert alert-info mt-4"><strong>Submenu</strong> berhasil diubah!!</div>');
-            redirect('ui/submenu');
+            redirect('layout/submenu');
         }
     }
 
@@ -220,6 +220,6 @@ class UI extends CI_Controller
         $this->db->delete('submenu', ['id' => $id]);
 
         $this->session->set_flashdata('submenu', '<div class="alert alert-warning mt-2">Submenu <strong>' . $side->title . ' </strong>berhasil dihapus!!</div>');
-        redirect('ui/submenu');
+        redirect('layout/submenu');
     }
 }

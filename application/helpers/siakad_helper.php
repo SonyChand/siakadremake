@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-function supreme()
+function admin()
 {
     $access = get_instance();
     if (!$access->session->userdata('email') || $access->session->userdata('role') != 1) {
@@ -9,7 +9,7 @@ function supreme()
     }
 }
 
-function super()
+function kepala()
 {
     $access = get_instance();
     if (!$access->session->userdata('email') || $access->session->userdata('role') > 2) {
@@ -17,7 +17,7 @@ function super()
     }
 }
 
-function admin()
+function guru()
 {
     $access = get_instance();
     if (!$access->session->userdata('email') || $access->session->userdata('role') > 3) {
@@ -25,6 +25,13 @@ function admin()
     }
 }
 
+function siswa()
+{
+    $access = get_instance();
+    if (!$access->session->userdata('email') || $access->session->userdata('role') > 4) {
+        redirect('dashboard');
+    }
+}
 function user()
 {
     $access = get_instance();
@@ -183,71 +190,6 @@ function tanggal_indonesia2($tanggal)
     return $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
 }
 
-function token($email, $tanggalSekarang)
-{
-    $access = get_instance();
-
-    $initial = strtoupper(substr($email, 0, 1));
-    $randomChar = strtoupper(str_shuffle($email));
-    $randomTgl = strtoupper(str_shuffle($tanggalSekarang));
-    $code = $initial . $randomChar . $randomTgl;
-    $kode = substr(str_shuffle(md5($code)), 0, 8);
-
-    $query = $access->db->get_where('token_pengguna', ['token' => $kode, 'email' => $email]);
-    if ($query->num_rows > 0) {
-        return token($email, $tanggalSekarang);
-    } else {
-        return $kode;
-    }
-}
-
-function kodeRM($name, $nik)
-{
-    $access = get_instance();
-
-    $initial = strtoupper(substr($name, 0, 1));
-
-
-    $randomChar = strtoupper(substr(str_shuffle(substr($name, 1)), 0, 1));
-
-    $nikLastTwoDigits = substr($nik, -2);
-
-    $defaultCode = '01';
-
-    $code = $initial . $randomChar . '.' . $nikLastTwoDigits . '.' . $defaultCode;
-
-    $query = $access->db->get_where('pasien', ['id_rm' => $code]);
-    if ($query->num_rows > 0) {
-        return kodeRM($name, $nik);
-    } else {
-        return $code;
-    }
-}
-
-function invoiceKode($name, $noRM)
-{
-    $access = get_instance();
-
-    $tanggalSekarang = date('YmdHis');
-
-    // Gabungkan nama pasien, no RM, dan tanggal sekarang
-    $acakNama = strtoupper(substr(str_shuffle($name), 0, 1));
-    $acakNoRM = strtoupper(substr(str_shuffle($noRM), 0, 1));
-    $kode =  $acakNama . $acakNoRM . $tanggalSekarang;
-
-    $kode = md5($kode);
-
-    // Ambil 10 digit pertama dari hasil hash
-    $invoiceCode = substr($kode, 0, 10);
-
-    $query = $access->db->get_where('pembayaran', ['invoice' => $invoiceCode]);
-    if ($query->num_rows > 0) {
-        return invoiceKode($name, $noRM);
-    } else {
-        return $invoiceCode;
-    }
-}
-
 function money($money)
 {
     $pulus = 'Rp. ' . number_format($money, 0, ',', '.');
@@ -256,26 +198,23 @@ function money($money)
 function hideName($name)
 {
     $words = explode(' ', $name);
-    $hiddenName = '';
-    foreach ($words as $word) {
-        $hiddenName .= substr($word, 0, 1) . str_repeat('*', strlen($word) - 2) . substr($word, -1) . ' ';
+    if ($name == true) {
+        $hiddenName = '';
+        foreach ($words as $word) {
+            $hiddenName .= substr($word, 0, 1) . str_repeat('*', strlen($word) - 2) . substr($word, -1) . ' ';
+        }
+        return trim($hiddenName);
+    } else {
+        return $name;
     }
-    return trim($hiddenName);
 }
-
-function hideNoRM($noRM)
-{
-    $words = explode(' ', $noRM);
-    $hiddenName = '';
-    foreach ($words as $word) {
-        $hiddenName .= substr($word, 0, 1) . str_repeat('*', strlen($word) - 2) . substr($word, -1) . ' ';
-    }
-    return trim($hiddenName);
-}
-
 
 function hideNik($nik)
 {
-    $hiddenNik = substr($nik, 0, 3) . str_repeat('*', strlen($nik) - 6) . substr($nik, -3);
-    return $hiddenNik;
+    if ($nik == true) {
+        $hiddenNik = substr($nik, 0, 3) . str_repeat('*', strlen($nik) - 6) . substr($nik, -3);
+        return $hiddenNik;
+    } else {
+        return $nik;
+    }
 }

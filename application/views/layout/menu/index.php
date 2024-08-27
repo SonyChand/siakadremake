@@ -72,7 +72,9 @@
                                                             Pilih Akses
                                                         </option>
                                                         <option value="1">Admin</option>
-                                                        <option value="2">Dokter</option>
+                                                        <option value="2">Kepala Sekolah</option>
+                                                        <option value="3">Ustadz/Guru</option>
+                                                        <option value="4">Siswa</option>
                                                     </select>
                                                     <?= form_error('for', '<small class="text-danger">', '</small>'); ?>
                                                 </div>
@@ -131,10 +133,10 @@
                                             <td><?= $row->icon ?></td>
                                             <td><?= $row->status ?></td>
                                             <td class="text-center">
-                                                <a href="<?= base_url('ui/ubah') . $title . '/' . $row->id ?>">
+                                                <a href="<?= base_url('layout/ubah') . $title . '/' . $row->id ?>">
                                                     <span class="badge bg-warning"><i class="bi bi-pencil-square me-1"></i> Ubah</span>
                                                 </a>
-                                                <a href="<?= base_url('ui/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
+                                                <a href="<?= base_url('layout/hapus') . $title . '/' . $row->id ?>" onclick="return confirm('Apakah anda yakin')">
                                                     <span class="badge bg-danger"><i class="bi bi-trash me-1"></i> Hapus</span>
                                                 </a>
                                             </td>

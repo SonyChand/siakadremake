@@ -58,12 +58,18 @@
                                     <option value="<?= $oneData->for ?>" hidden>
                                         <?php if ($oneData->for == 1) : ?>
                                             Admin
+                                        <?php elseif ($oneData->for == 2) : ?>
+                                            Kepala Sekolah
+                                        <?php elseif ($oneData->for == 3) : ?>
+                                            Ustadz/Guru
                                         <?php else : ?>
-                                            Dokter
+                                            Siswa
                                         <?php endif; ?>
                                     </option>
                                     <option value="1">Admin</option>
-                                    <option value="2">Dokter</option>
+                                    <option value="2">Kepala Sekolah</option>
+                                    <option value="3">Ustadz/Guru</option>
+                                    <option value="4">Siswa</option>
                                 </select>
                                 <?= form_error('for', '<small class="text-danger">', '</small>'); ?>
                             </div>
@@ -84,7 +90,7 @@
                             </div>
 
                             <div class="text-end mt-5">
-                                <a href="<?= base_url('ui/menu') ?>" class="btn btn-secondary">Kembali</a>
+                                <a href="<?= base_url('layout/menu') ?>" class="btn btn-secondary">Kembali</a>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form><!-- End Multi Columns Form -->

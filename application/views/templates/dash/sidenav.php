@@ -39,21 +39,10 @@
             <div class="sidebar-content">
                 <ul class="nav nav-secondary">
                     <?php
-                    if ($user->role == 1) {
-                        $nav = $this->db->order_by('order', 'ASC')->get_where('menu', [
-                            'status' => 1
-                        ])->result_array();
-                    } elseif ($user->role == 2) {
-                        $nav = $this->db->order_by('order', 'ASC')->get_where('menu', [
-                            'status' => 1,
-                            'for >=' => $user->role
-                        ])->result_array();
-                    } else {
-                        $nav = $this->db->order_by('order', 'ASC')->get_where('menu', [
-                            'status' => 1,
-                            'for' => 3
-                        ])->result_array();
-                    }
+                    $nav = $this->db->order_by('order', 'ASC')->get_where('menu', [
+                        'status' => 1,
+                        'for' => $user->role
+                    ])->result_array();
                     ?>
                     <!-- Nav Item - Dashboard -->
                     <?php foreach ($nav as $n) : ?>
@@ -106,6 +95,12 @@
                             <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
+                        <li class="nav-item">
+                            <a href="<?= base_url('auth/logout') ?>">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <p>Keluar</p>
+                            </a>
+                        </li>
                 </ul>
             </div>
         </div>

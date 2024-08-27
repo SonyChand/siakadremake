@@ -63,24 +63,6 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="role" class="form-label">Akses Pengguna</label>
-                                <select id="role" class="form-select" name="role" required>
-                                    <option value="<?= $oneData->role ?>" hidden>
-                                        <?php
-                                        if ($oneData->role == 1) {
-                                            echo "Admin";
-                                        } else {
-                                            echo "Ustadz";
-                                        }
-                                        ?>
-                                    </option>
-                                    <option value="1">Admin</option>
-                                    <option value="2">Ustadz</option>
-                                </select>
-                                <?= form_error('role', '<small class="text-danger">', '</small>'); ?>
-                            </div>
-
-                            <div class="col-md-6">
                                 <label for="status" class="form-label">Status</label>
                                 <select id="status" class="form-select" name="status" required>
                                     <option value="<?= $oneData->status ?>" hidden>

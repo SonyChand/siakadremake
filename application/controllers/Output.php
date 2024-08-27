@@ -9,7 +9,7 @@ class Output extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('Asia/Jakarta');
-        super();
+        user();
         $this->load->library('pdfgenerator');
     }
 
@@ -83,7 +83,7 @@ class Output extends CI_Controller
         $this->print($html, $file_pdf, $paper, $orientation);
     }
 
-    public function dataguru()
+    public function dataGuru()
     {
         $data = [
             'user' => $this->db->get_where('pengguna', ['email' => $this->session->userdata('email')])->row(),
