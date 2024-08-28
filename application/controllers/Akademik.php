@@ -141,11 +141,17 @@ class Akademik extends CI_Controller
         $kelas = $this->db->get('kelas')->result();
         $result = array();
         foreach ($kelas as $row) {
+            $guru = $this->db->get_where('pengguna', ['id' => $row->id_ustadz])->row();
+            if ($row->status == 1) {
+                $status = 'Aktif';
+            } else {
+                $status = 'Nonaktif';
+            }
             $result['data'][] = array(
                 $row->id,
-                $row->id_ustadz,
+                $guru->nama,
                 $row->nama,
-                $row->status,
+                $status,
                 '<a class="btn btn-sm btn-primary" onclick="editKelas(' . $row->id . ')" href="#">Edit</a> <button class="btn btn-sm btn-danger" onclick="deleteKelas(' . $row->id . ')">Hapus</button>'
             );
         }
@@ -629,6 +635,8 @@ class Akademik extends CI_Controller
         $pel = $this->db->get_where('mata_pelajaran', ['id' => $id])->row();
 
         $this->db->delete('mata_pelajaran', ['id' => $id]);
+        $this->db->delete('rapor', ['id_matpel' => $id]);
+        $this->db->delete('penilaian', ['id_matpel' => $id]);
 
         $this->session->set_flashdata('matpel', '<div class="alert alert-warning">Data Mata Pelajaran <strong>' . $pel->nama . '</strong> berhasil dihapus!!</div>');
         redirect('akademik/matpel');

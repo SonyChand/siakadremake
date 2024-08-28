@@ -128,7 +128,7 @@
                             </div>
 
                             <div class="text-end mt-5">
-                                <a href="<?= base_url('akademik/ustadz') ?>" class="btn btn-secondary">Kembali</a>
+                                <a href="<?= base_url('akademik/siswa') ?>" class="btn btn-secondary">Kembali</a>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form><!-- End Multi Columns Form -->

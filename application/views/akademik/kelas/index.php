@@ -149,7 +149,7 @@
                     <div class="card-body">
                         <?= $this->session->flashdata('kelas'); ?>
                         <div class="table-responsive">
-                            <table id="kuntul" class="display table table-striped table-hover">
+                            <table id="tabelKelas" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -184,7 +184,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#kuntul").DataTable({
+        $("#tabelKelas").DataTable({
             ajax: '<?= base_url('akademik/kelass') ?>',
             order: [],
             pageLength: 10,
@@ -256,7 +256,7 @@
                     if (response.count == 0) {
                         location.reload();
                     }
-                    $("#kuntul").DataTable().ajax.reload();
+                    $("#tabelKelas").DataTable().ajax.reload();
                 }
             },
             error: function() {
@@ -278,7 +278,7 @@
                 $("#addRowModal").modal('hide');
                 $("#tbKelas")[0].reset();
                 alert('Uhuy');
-                $("#kuntul").DataTable().ajax.reload();
+                $("#tabelKelas").DataTable().ajax.reload();
             },
             error: function() {
                 alert('Error occurred during AJAX request');
@@ -301,7 +301,7 @@
                 } else {
                     alert('Kuntul');
                 }
-                $("#kuntul").DataTable().ajax.reload();
+                $("#tabelKelas").DataTable().ajax.reload();
             },
             error: function() {
                 alert('Error occurred during AJAX request');
