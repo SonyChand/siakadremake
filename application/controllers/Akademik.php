@@ -348,7 +348,7 @@ class Akademik extends CI_Controller
                     'email' => strtolower(str_replace(' ', '', $this->input->post('nama', true))) . "@gmail.com",
                     'password' => password_hash(strtolower(str_replace(' ', '', $this->input->post('nama', true))) . "@gmail.com", PASSWORD_DEFAULT),
                     'image' => $img,
-                    'role' => 2,
+                    'role' => 3,
                     'no_hp' => str_replace(' ', '', str_replace('+', '', $this->input->post('no_hp', true))),
                     'jenis_kelamin' => $this->input->post('jk', true),
                     'tgl_dibuat' => time(),

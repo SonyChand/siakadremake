@@ -131,8 +131,12 @@ class Admin extends CI_Controller
 	public function hapusPengguna($id)
 	{
 		$pel = $this->db->get_where('pengguna', ['id' => $id])->row();
+		$guru = $this->db->get_where('ustadz', ['id_user' => $pel->id])->row();
 
 		$this->db->delete('pengguna', ['id' => $id]);
+		$this->db->delete('ustadz', ['id_user' => $id]);
+		$this->db->delete('penjadwalan', ['id_ustadz' => $guru->id]);
+
 
 		$this->session->set_flashdata('pengguna', '<div class="alert alert-warning">Data Pengguna <strong>' . $pel->email . '</strong> berhasil dihapus!!</div>');
 		redirect('admin/pengguna');
