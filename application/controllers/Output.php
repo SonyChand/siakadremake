@@ -93,7 +93,7 @@ class Output extends CI_Controller
 
         $file_pdf = strtolower($data['title']);
         $paper = 'A4';
-        $orientation = 'Portrait';
+        $orientation = 'Landscape';
         $html = $this->load->view('output/guru/data', $data, true);
 
 

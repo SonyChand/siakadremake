@@ -71,10 +71,10 @@
                 <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
             </td>
             <td class="text-center">
-                <span style="font-size: 15px;">SISTEM INFORMASI AKADEMIK</span><br>
-                <span style="font-size: 15px;"><?= strtoupper($title) ?></span><br>
-                <span style="font-size: 15px;"><?= base_url() ?></span><br>
-                <!-- <strong style="font-size: 15px;"><?= strtoupper($dd['puskes']); ?></strong><br> -->
+                <span style="font-size: 15px;font-weight:bolder">MADRASAH DINIYAH TAKMILIYAH AWALIYAH</span><br>
+                <span style="font-size: 15px;font-weight:bolder">Al-Ishlah</span><br>
+                <span style="font-size: 10px;">Sekretariat: Jalan Terusan Kopo Km. 13,2 Blk No 204 RT 003/005</span><br>
+                <span style="font-size: 10px;">Desa/Kec. Katapang Kab. Bandung Provinsi Jawa Barat 40971 Tlp. 085314093853</span><br>
             </td>
             <td style="width: 20% !important;" class="text-start">
                 <img src="<?= base_url('assets/img/logo/kop.jpg'); ?>" width="70">
@@ -128,7 +128,21 @@
                 </tr>
             <?php endforeach; ?>
     </table>
-    <p style="font-size:x-small;text-align:right">Dicetak pada: <?= tanggal_indonesia(date('Y-m-d')) ?></p>
+    <table style="margin-top: 100px; width:100%">
+        <tr>
+            <td style="width: 25% !important;text-align:center;">
+                Katapang, <?= tanggal_indonesia(date('Y-m-d')) ?> <br>
+                Walikelas<br><br><br><br><br>
+                (.................................................)
+            </td>
+            <td style="width: 50% !important;"></td>
+            <td style="text-align:center">
+                Mengetahui, <br>
+                Kepala Sekolah<br><br><br><br><br>
+                (.................................................)
+            </td>
+        </tr>
+    </table>
 
 </body>
 
