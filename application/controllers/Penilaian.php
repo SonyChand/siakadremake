@@ -65,7 +65,7 @@ class Penilaian extends CI_Controller
 			'nilai !=' => null
 		]);
 		if ($query1->row()->nilai != null) {
-			// (Nilai * Bobot) / 100
+			// Nilai * Bobot / 100
 			$nilaiKehadiran = $query1->row()->nilai * $matpel->b1 / 100;
 			$i++;
 		} else {
